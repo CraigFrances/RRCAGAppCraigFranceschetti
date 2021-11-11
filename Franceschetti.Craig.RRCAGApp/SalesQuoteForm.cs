@@ -94,13 +94,78 @@ namespace Franceschetti.Craig.RRCAGApp
                 }
             }
 
-            if (tradeInValue > vehicleSalePrice)
+            if (this.errorProvider.GetError(txtVehicleSalePrice).Equals(string.Empty) && this.errorProvider.GetError(txtTradeInValue).Equals(string.Empty))
             {
-                errorProvider.SetError(txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
-            }
+                vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
+                tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
+                if(tradeInValue > vehicleSalePrice)
+                {
+                    errorProvider.SetError(txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
+                }
+                const decimal SalesTaxRate = .12m;
+                SalesQuote salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
 
-           
-                     
+                lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
+
+                if (chkStereoSystem.Checked && !chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.StereoSystem;
+                }
+                else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && !chkComputerNavigation.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.LeatherInterior;
+                }
+                else if (chkComputerNavigation.Checked && !chkLeatherInterior.Checked && !chkStereoSystem.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.ComputerNavigation;
+                }
+                else if (chkStereoSystem.Checked && chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.StereoAndLeather;
+                }
+                else if (chkStereoSystem.Checked && chkComputerNavigation.Checked && !chkLeatherInterior.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.StereoAndNavigation;
+                }
+                else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && chkComputerNavigation.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.LeatherAndNavigation;
+                }
+                else if (chkLeatherInterior.Checked && chkComputerNavigation.Checked && chkStereoSystem.Checked)
+                {
+                    salesQuote.AccessoriesChosen = Accessories.All;
+                }
+                else
+                {
+                    salesQuote.AccessoriesChosen = Accessories.None;
+                }
+
+                if (radStandard.Checked)
+                {
+                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Standard;
+                }
+                else if (radPearlized.Checked)
+                {
+                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Pearlized;
+                }
+                else if (radCustomizedDetailing.Checked)
+                {
+                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Custom;
+                }
+                else
+                {
+                    salesQuote.ExteriorFinishChosen = ExteriorFinish.None;
+                }
+
+                decimal option = salesQuote.AccessoryCost + salesQuote.FinishCost;
+                lblOptionsOutput.Text = option.ToString("N");
+
+            } 
+            else
+            {
+                // hide summary and finance sections
+            }
+            
         }
     }
 }
