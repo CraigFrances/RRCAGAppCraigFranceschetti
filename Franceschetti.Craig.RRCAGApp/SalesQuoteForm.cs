@@ -106,83 +106,80 @@ namespace Franceschetti.Craig.RRCAGApp
                 if(tradeInValue > vehicleSalePrice)
                 {
                     errorProvider.SetError(txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
-                }
-                const decimal SalesTaxRate = .12m;
-                SalesQuote salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
-
-                lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
-
-                if (chkStereoSystem.Checked && !chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.StereoSystem;
-                }
-                else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && !chkComputerNavigation.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.LeatherInterior;
-                }
-                else if (chkComputerNavigation.Checked && !chkLeatherInterior.Checked && !chkStereoSystem.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.ComputerNavigation;
-                }
-                else if (chkStereoSystem.Checked && chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.StereoAndLeather;
-                }
-                else if (chkStereoSystem.Checked && chkComputerNavigation.Checked && !chkLeatherInterior.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.StereoAndNavigation;
-                }
-                else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && chkComputerNavigation.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.LeatherAndNavigation;
-                }
-                else if (chkLeatherInterior.Checked && chkComputerNavigation.Checked && chkStereoSystem.Checked)
-                {
-                    salesQuote.AccessoriesChosen = Accessories.All;
+                    ClearSummaryOutput();
                 }
                 else
                 {
-                    salesQuote.AccessoriesChosen = Accessories.None;
+                    const decimal SalesTaxRate = .12m;
+                    SalesQuote salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
+
+                    lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
+
+                    if (chkStereoSystem.Checked && !chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.StereoSystem;
+                    }
+                    else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && !chkComputerNavigation.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.LeatherInterior;
+                    }
+                    else if (chkComputerNavigation.Checked && !chkLeatherInterior.Checked && !chkStereoSystem.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.ComputerNavigation;
+                    }
+                    else if (chkStereoSystem.Checked && chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.StereoAndLeather;
+                    }
+                    else if (chkStereoSystem.Checked && chkComputerNavigation.Checked && !chkLeatherInterior.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.StereoAndNavigation;
+                    }
+                    else if (chkLeatherInterior.Checked && !chkStereoSystem.Checked && chkComputerNavigation.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.LeatherAndNavigation;
+                    }
+                    else if (chkLeatherInterior.Checked && chkComputerNavigation.Checked && chkStereoSystem.Checked)
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.All;
+                    }
+                    else
+                    {
+                        salesQuote.AccessoriesChosen = Accessories.None;
+                    }
+
+                    if (radStandard.Checked)
+                    {
+                        salesQuote.ExteriorFinishChosen = ExteriorFinish.Standard;
+                    }
+                    else if (radPearlized.Checked)
+                    {
+                        salesQuote.ExteriorFinishChosen = ExteriorFinish.Pearlized;
+                    }
+                    else if (radCustomizedDetailing.Checked)
+                    {
+                        salesQuote.ExteriorFinishChosen = ExteriorFinish.Custom;
+                    }
+
+                    decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
+                    lblOptionsOutput.Text = options.ToString("N");
+
+                    lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
+                    lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
+                    lblTotalOutput.Text = salesQuote.Total.ToString("C");
+
+                    decimal tradeInAsNegative = -1m * salesQuote.TradeInAmount;
+                    lblTradeInOutput.Text = tradeInAsNegative.ToString("N");
+
+                    lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
+
+                    decimal rate = nudAnnualInterestRate.Value / 100;
+                    int paymentPeriods = (int)nudNumberOfYears.Value * 12;
+                    decimal presentValue = salesQuote.AmountDue;
+                    decimal monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
+
+                    lblMonthlyPaymentFinanceOutput.Text = monthlyPaymentOutput.ToString("C");
                 }
-
-                if (radStandard.Checked)
-                {
-                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Standard;
-                }
-                else if (radPearlized.Checked)
-                {
-                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Pearlized;
-                }
-                else if (radCustomizedDetailing.Checked)
-                {
-                    salesQuote.ExteriorFinishChosen = ExteriorFinish.Custom;
-                }
-                else
-                {
-                    salesQuote.ExteriorFinishChosen = ExteriorFinish.None;
-                }
-
-                decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
-                lblOptionsOutput.Text = options.ToString("N");
-
-                lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
-                lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
-                lblTotalOutput.Text = salesQuote.Total.ToString("C");
-
-                decimal tradeInAsNegative = -1m * salesQuote.TradeInAmount;
-                lblTradeInOutput.Text = tradeInAsNegative.ToString("N");
-
-                lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
-
-                decimal rate = nudAnnualInterestRate.Value / 100;
-                int paymentPeriods = (int)nudNumberOfYears.Value * 12;
-                decimal presentValue = salesQuote.AmountDue;
-                decimal monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
-
-                lblMonthlyPaymentFinanceOutput.Text = monthlyPaymentOutput.ToString("C");
-
-
-
             } 
             else
             {
