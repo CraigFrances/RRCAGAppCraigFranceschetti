@@ -32,6 +32,13 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             this.txtVehicleSalePrice.Text = string.Empty;
             this.txtTradeInValue.Text = "0";
+            ClearSummaryOutput();
+            this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
+            this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
+        }
+
+        private void ClearSummaryOutput()
+        {
             this.lblVehicleSalePriceOutput.Text = string.Empty;
             this.lblOptionsOutput.Text = string.Empty;
             this.lblSubTotalOutput.Text = string.Empty;
@@ -40,8 +47,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblTradeInOutput.Text = string.Empty;
             this.lblAmountDueOutput.Text = string.Empty;
             this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
-            this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
-            this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
         }
 
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
@@ -157,13 +162,31 @@ namespace Franceschetti.Craig.RRCAGApp
                     salesQuote.ExteriorFinishChosen = ExteriorFinish.None;
                 }
 
-                decimal option = salesQuote.AccessoryCost + salesQuote.FinishCost;
-                lblOptionsOutput.Text = option.ToString("N");
+                decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
+                lblOptionsOutput.Text = options.ToString("N");
+
+                lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
+                lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
+                lblTotalOutput.Text = salesQuote.Total.ToString("C");
+
+                decimal tradeInAsNegative = -1m * salesQuote.TradeInAmount;
+                lblTradeInOutput.Text = tradeInAsNegative.ToString("N");
+
+                lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
+
+                decimal rate = nudAnnualInterestRate.Value / 100;
+                int paymentPeriods = (int)nudNumberOfYears.Value * 12;
+                decimal presentValue = salesQuote.AmountDue;
+                decimal monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
+
+                lblMonthlyPaymentFinanceOutput.Text = monthlyPaymentOutput.ToString("C");
+
+
 
             } 
             else
             {
-                // hide summary and finance sections
+                ClearSummaryOutput();
             }
             
         }
