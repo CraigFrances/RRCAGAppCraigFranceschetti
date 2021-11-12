@@ -17,11 +17,6 @@ namespace Franceschetti.Craig.RRCAGApp
         private SalesQuote salesQuote;
         private decimal vehicleSalePrice;
         private decimal tradeInValue;
-        private decimal options;
-        private decimal rate;
-        private int paymentPeriods;
-        private decimal presentValue;
-        private decimal monthlyPaymentOutput;
 
         public SalesQuoteForm()
         {
@@ -35,7 +30,70 @@ namespace Franceschetti.Craig.RRCAGApp
             this.chkStereoSystem.Click += ChkStereoSystem_Click;
             this.chkLeatherInterior.Click += ChkLeatherInterior_Click;
             this.chkComputerNavigation.Click += ChkComputerNavigation_Click;
-            
+            this.radStandard.Click += RadStandard_Click;
+            this.radPearlized.Click += RadPearlized_Click;
+            this.radCustomizedDetailing.Click += RadCustomizedDetailing_Click;
+            this.nudNumberOfYears.ValueChanged += NudNumberOfYears_ValueChanged;
+            this.nudAnnualInterestRate.ValueChanged += NudAnnualInterestRate_ValueChanged;
+            this.btnReset.Click += BtnReset_Click;
+        }
+
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            const string message = "Do you want to reset the form?";
+            const string caption = "Reset Form";
+            const MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            const MessageBoxIcon warning = MessageBoxIcon.Warning;
+            const MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button2;
+            DialogResult messageBoxDialogResult = MessageBox.Show(this, message, caption, buttons, warning, defaultButton);
+            if (messageBoxDialogResult.Equals(DialogResult.Yes))
+            {
+                SalesQuoteFormDefaultState();
+                
+            }
+        }
+
+        private void NudAnnualInterestRate_ValueChanged(object sender, EventArgs e)
+        {
+            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
+            {
+                FinancialOutput();
+            }
+        }
+
+        private void NudNumberOfYears_ValueChanged(object sender, EventArgs e)
+        {
+            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
+            {
+                FinancialOutput();
+            }
+        }
+
+        private void RadCustomizedDetailing_Click(object sender, EventArgs e)
+        {
+            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        private void RadPearlized_Click(object sender, EventArgs e)
+        {
+            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        private void RadStandard_Click(object sender, EventArgs e)
+        {
+            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
         }
 
         private void ChkComputerNavigation_Click(object sender, EventArgs e)
@@ -77,11 +135,15 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void SalesQuoteFormDefaultState()
         {
+            this.txtVehicleSalePrice.Focus();
             this.txtVehicleSalePrice.Text = string.Empty;
             this.txtTradeInValue.Text = "0";
-            ClearVehicleSummaryAndFinanceOutput();
+            this.nudNumberOfYears.Value = 1m;
+            this.nudAnnualInterestRate.Value = 5m;
             this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
             this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
+            ClearVehicleSummaryAndFinanceOutput();
+            ResetErrorIcons();
         }
 
         private void ClearVehicleSummaryAndFinanceOutput()
@@ -98,8 +160,7 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
         {
-            this.errorProvider.SetError(this.txtVehicleSalePrice, string.Empty);
-            this.errorProvider.SetError(this.txtTradeInValue, string.Empty);
+            ResetErrorIcons();
 
             try
             {
@@ -121,7 +182,7 @@ namespace Franceschetti.Craig.RRCAGApp
                     this.errorProvider.SetError(this.txtVehicleSalePrice, "Vehicle price cannot contain letters or special characters.");
                 }
             }
-            
+
             try
             {
                 this.tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
@@ -147,7 +208,7 @@ namespace Franceschetti.Craig.RRCAGApp
             {
                 this.vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
                 this.tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
-                if(this.tradeInValue > this.vehicleSalePrice)
+                if (this.tradeInValue > this.vehicleSalePrice)
                 {
                     errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
                     ClearVehicleSummaryAndFinanceOutput();
@@ -161,12 +222,17 @@ namespace Franceschetti.Craig.RRCAGApp
                     VehicleSummaryOutput();
                     FinancialOutput();
                 }
-            } 
+            }
             else
             {
                 ClearVehicleSummaryAndFinanceOutput();
             }
-            
+        }
+
+        private void ResetErrorIcons()
+        {
+            this.errorProvider.SetError(this.txtVehicleSalePrice, string.Empty);
+            this.errorProvider.SetError(this.txtTradeInValue, string.Empty);
         }
 
         private void ExteriorFinishChosen()
@@ -224,7 +290,7 @@ namespace Franceschetti.Craig.RRCAGApp
         private void VehicleSummaryOutput()
         {
             this.lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
-            this.options = salesQuote.AccessoryCost + salesQuote.FinishCost;
+            decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
             lblOptionsOutput.Text = options.ToString("N");
 
             lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
@@ -238,7 +304,7 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn()
         {
-            this.options = salesQuote.AccessoryCost + salesQuote.FinishCost;
+            decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
             lblOptionsOutput.Text = options.ToString("N");
 
             lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
@@ -250,10 +316,10 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void FinancialOutput()
         {
-            this.rate = nudAnnualInterestRate.Value / 100;
-            this.paymentPeriods = (int)nudNumberOfYears.Value * 12;
-            this.presentValue = salesQuote.AmountDue;
-            this.monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
+            decimal rate = nudAnnualInterestRate.Value / 100;
+            int paymentPeriods = (int)nudNumberOfYears.Value * 12;
+            decimal presentValue = salesQuote.AmountDue;
+            decimal monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
 
             lblMonthlyPaymentFinanceOutput.Text = monthlyPaymentOutput.ToString("C");
         }
