@@ -156,6 +156,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblTradeInOutput.Text = string.Empty;
             this.lblAmountDueOutput.Text = string.Empty;
             this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
+            this.salesQuote = null;
         }
 
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
