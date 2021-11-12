@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Name: Craig Franceschetti
+ * Program: Business Information Technology
+ * Course: ADEV-2008 Programming 2
+ * Created: 2021-11-8
+ * Updated: 
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,28 +17,42 @@ using System.Windows.Forms;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
+    /// <summary>
+    /// Represents the launcher form.
+    /// </summary>
     public partial class LauncherForm : Form
     {
+        /// <summary>
+        /// Initializes the launcher.
+        /// </summary>
         public LauncherForm()
         {
             InitializeComponent();
-
             mnuFileOpenSalesQuote.Click += MnuFileOpen_Click;
             mnuHelpAbout.Click += MnuHelpAbout_Click;
             mnuFileExit.Click += MnuFileExit_Click;
         }
 
+        /// <summary>
+        /// Handles the Click event of the exit menu item.
+        /// </summary>
         private void MnuFileExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        /// <summary>
+        /// Handles the Click event of the about menu item.
+        /// </summary>
         private void MnuHelpAbout_Click(object sender, EventArgs e)
         {
             AboutForm aboutForm = new AboutForm();
             aboutForm.ShowDialog();
         }
 
+        /// <summary>
+        /// Handles the Click event of the open menu item for SalesQuote.
+        /// </summary>
         private void MnuFileOpen_Click(object sender, EventArgs e)
         {
             SalesQuoteForm salesQuoteForm = new SalesQuoteForm();
