@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ * Name: Craig Franceschetti
+ * Program: Business Information Technology
+ * Course: ADEV-2008 Programming 2
+ * Created: 2021-11-9
+ * Updated: 
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,18 +19,20 @@ using Franceschetti.Craig.RRCAG;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
+    /// <summary>
+    /// Represents a Sales Quote Form.
+    /// </summary>
     public partial class SalesQuoteForm : Form
     {
         private SalesQuote salesQuote;
-        private decimal vehicleSalePrice;
-        private decimal tradeInValue;
-
+        
+        /// <summary>
+        /// Initializes the SalesQuoteForm.
+        /// </summary>
         public SalesQuoteForm()
         {
             InitializeComponent();
-            
             this.Load += SalesQuoteForm_Load;
-
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
             this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
@@ -38,136 +47,29 @@ namespace Franceschetti.Craig.RRCAGApp
             this.btnReset.Click += BtnReset_Click;
         }
 
-        private void BtnReset_Click(object sender, EventArgs e)
-        {
-            const string message = "Do you want to reset the form?";
-            const string caption = "Reset Form";
-            const MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            const MessageBoxIcon warning = MessageBoxIcon.Warning;
-            const MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button2;
-            DialogResult messageBoxDialogResult = MessageBox.Show(this, message, caption, buttons, warning, defaultButton);
-            if (messageBoxDialogResult.Equals(DialogResult.Yes))
-            {
-                SalesQuoteFormDefaultState();
-                
-            }
-        }
-
-        private void NudAnnualInterestRate_ValueChanged(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                FinancialOutput();
-            }
-        }
-
-        private void NudNumberOfYears_ValueChanged(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                FinancialOutput();
-            }
-        }
-
-        private void RadCustomizedDetailing_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void RadPearlized_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void RadStandard_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void ChkComputerNavigation_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void ChkLeatherInterior_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void ChkStereoSystem_Click(object sender, EventArgs e)
-        {
-            if (salesQuote != null && !lblMonthlyPaymentFinanceOutput.Text.Equals(string.Empty))
-            {
-                AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        private void TxtVehicleSalePriceOrTxtTradeInValue_TextChanged(object sender, EventArgs e)
-        {
-            ClearVehicleSummaryAndFinanceOutput();
-        }
-
+        /// <summary>
+        /// Handles the Load event of the SalesQuoteForm.
+        /// </summary>
         private void SalesQuoteForm_Load(object sender, EventArgs e)
         {
-            SalesQuoteFormDefaultState();
+            SalesQuoteFormInitialState();
         }
 
-        private void SalesQuoteFormDefaultState()
-        {
-            this.txtVehicleSalePrice.Focus();
-            this.txtVehicleSalePrice.Text = string.Empty;
-            this.txtTradeInValue.Text = "0";
-            this.nudNumberOfYears.Value = 1m;
-            this.nudAnnualInterestRate.Value = 5m;
-            this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
-            this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
-            ClearVehicleSummaryAndFinanceOutput();
-            ResetErrorIcons();
-        }
 
-        private void ClearVehicleSummaryAndFinanceOutput()
-        {
-            this.lblVehicleSalePriceOutput.Text = string.Empty;
-            this.lblOptionsOutput.Text = string.Empty;
-            this.lblSubTotalOutput.Text = string.Empty;
-            this.lblSalesTaxOutput.Text = string.Empty;
-            this.lblTotalOutput.Text = string.Empty;
-            this.lblTradeInOutput.Text = string.Empty;
-            this.lblAmountDueOutput.Text = string.Empty;
-            this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
-            this.salesQuote = null;
-        }
-
+        /// <summary>
+        /// Handles the Click event of the calculate quote button.
+        /// </summary>
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
         {
             ResetErrorIcons();
+            decimal vehicleSalePrice;
+            decimal tradeInValue;
 
             try
             {
-                this.vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
+                vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
 
-                if (this.vehicleSalePrice <= 0m)
+                if (vehicleSalePrice <= 0m)
                 {
                     this.errorProvider.SetError(this.txtVehicleSalePrice, "Vehicle price cannot be less than or equal to 0.");
                 }
@@ -186,9 +88,9 @@ namespace Franceschetti.Craig.RRCAGApp
 
             try
             {
-                this.tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
+                tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
 
-                if (this.tradeInValue < 0)
+                if (tradeInValue < 0)
                 {
                     this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot be less than 0.");
                 }
@@ -207,9 +109,10 @@ namespace Franceschetti.Craig.RRCAGApp
 
             if (this.errorProvider.GetError(txtVehicleSalePrice).Equals(string.Empty) && this.errorProvider.GetError(txtTradeInValue).Equals(string.Empty))
             {
-                this.vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
-                this.tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
-                if (this.tradeInValue > this.vehicleSalePrice)
+                vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
+                tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
+
+                if (tradeInValue > vehicleSalePrice)
                 {
                     errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
                     ClearVehicleSummaryAndFinanceOutput();
@@ -217,7 +120,7 @@ namespace Franceschetti.Craig.RRCAGApp
                 else
                 {
                     const decimal SalesTaxRate = .12m;
-                    salesQuote = new SalesQuote(this.vehicleSalePrice, this.tradeInValue, SalesTaxRate);
+                    salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
                     AccessoriesChosen();
                     ExteriorFinishChosen();
                     VehicleSummaryOutput();
@@ -230,12 +133,170 @@ namespace Franceschetti.Craig.RRCAGApp
             }
         }
 
+        /// <summary>
+        /// Handles the TextChanged events for both the vehicleSalePrice text box, and the tradeInValue text box.
+        /// </summary>
+        private void TxtVehicleSalePriceOrTxtTradeInValue_TextChanged(object sender, EventArgs e)
+        {
+            ClearVehicleSummaryAndFinanceOutput();
+        }
+
+        /// <summary>
+        /// Handles the Click event for the StereoSystem check box.
+        /// </summary>
+        private void ChkStereoSystem_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                AccessoriesChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the LeatherInterior check box.
+        /// </summary>
+        private void ChkLeatherInterior_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                AccessoriesChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the ComputerNavigation check box.
+        /// </summary>
+        private void ChkComputerNavigation_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                AccessoriesChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the Standard radio button.
+        /// </summary>
+        private void RadStandard_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the Pearlized radio button.
+        /// </summary>
+        private void RadPearlized_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the CustomizedDetailing radio button.
+        /// </summary>
+        private void RadCustomizedDetailing_Click(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                ExteriorFinishChosen();
+                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+            }
+        }
+
+        /// <summary>
+        /// Handles the ValueChanged event for the NumberOfYears number up-down.
+        /// </summary>
+        private void NudNumberOfYears_ValueChanged(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                FinancialOutput();
+            }
+        }
+
+        /// <summary>
+        /// Handles the ValueChanged event for the AnnualInterestRate number up-down.
+        /// </summary>
+        private void NudAnnualInterestRate_ValueChanged(object sender, EventArgs e)
+        {
+            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
+            {
+                FinancialOutput();
+            }
+        }
+
+        /// <summary>
+        /// Handles the Click event for the Reset button.
+        /// </summary>
+        private void BtnReset_Click(object sender, EventArgs e)
+        {
+            const string Message = "Do you want to reset the form?";
+            const string Caption = "Reset Form";
+            const MessageBoxButtons Buttons = MessageBoxButtons.YesNo;
+            const MessageBoxIcon Warning = MessageBoxIcon.Warning;
+            const MessageBoxDefaultButton DefaultButton = MessageBoxDefaultButton.Button2;
+            DialogResult messageBoxDialogResult = MessageBox.Show(this, Message, Caption, Buttons, Warning, DefaultButton);
+            
+            if (messageBoxDialogResult.Equals(DialogResult.Yes))
+            {
+                SalesQuoteFormInitialState();
+            }
+        }
+
+        /// <summary>
+        /// Resets the SalesQuoteForm to it's initial state.
+        /// </summary>
+        private void SalesQuoteFormInitialState()
+        {
+            this.txtVehicleSalePrice.Focus();
+            this.txtVehicleSalePrice.Text = string.Empty;
+            this.txtTradeInValue.Text = "0";
+            this.nudNumberOfYears.Value = 1m;
+            this.nudAnnualInterestRate.Value = 5m;
+            this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
+            this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
+            ClearVehicleSummaryAndFinanceOutput();
+            ResetErrorIcons();
+        }
+
+        /// <summary>
+        /// Clears the vehicle summary and finance output section of the form.
+        /// </summary>
+        private void ClearVehicleSummaryAndFinanceOutput()
+        {
+            this.lblVehicleSalePriceOutput.Text = string.Empty;
+            this.lblOptionsOutput.Text = string.Empty;
+            this.lblSubTotalOutput.Text = string.Empty;
+            this.lblSalesTaxOutput.Text = string.Empty;
+            this.lblTotalOutput.Text = string.Empty;
+            this.lblTradeInOutput.Text = string.Empty;
+            this.lblAmountDueOutput.Text = string.Empty;
+            this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
+            this.salesQuote = null;
+        }
+
+        /// <summary>
+        /// Removes any error messages for the VehicleSalePrice and TradeInValue text boxes.
+        /// </summary>
         private void ResetErrorIcons()
         {
             this.errorProvider.SetError(this.txtVehicleSalePrice, string.Empty);
             this.errorProvider.SetError(this.txtTradeInValue, string.Empty);
         }
 
+        /// <summary>
+        /// Determines the exterior finish chosen.
+        /// </summary>
         private void ExteriorFinishChosen()
         {
             if (radStandard.Checked)
@@ -252,6 +313,9 @@ namespace Franceschetti.Craig.RRCAGApp
             }
         }
 
+        /// <summary>
+        /// Determines the accessories chosen.
+        /// </summary>
         private void AccessoriesChosen()
         {
             if (chkStereoSystem.Checked && !chkLeatherInterior.Checked && !chkComputerNavigation.Checked)
@@ -288,6 +352,9 @@ namespace Franceschetti.Craig.RRCAGApp
             }
         }
 
+        /// <summary>
+        /// Sets the Summary state. 
+        /// </summary>
         private void VehicleSummaryOutput()
         {
             this.lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
@@ -303,6 +370,9 @@ namespace Franceschetti.Craig.RRCAGApp
             lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
         }
 
+        /// <summary>
+        /// Sets the vehicle summary output, excluding trade in value.
+        /// </summary>
         private void VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn()
         {
             decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
@@ -312,9 +382,13 @@ namespace Franceschetti.Craig.RRCAGApp
             lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
             lblTotalOutput.Text = salesQuote.Total.ToString("C");
             lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
+
             FinancialOutput();
         }
 
+        /// <summary>
+        /// Sets the Finance state.
+        /// </summary>
         private void FinancialOutput()
         {
             decimal rate = nudAnnualInterestRate.Value / 100;
