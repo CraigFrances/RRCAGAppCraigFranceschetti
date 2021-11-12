@@ -14,13 +14,30 @@ namespace Franceschetti.Craig.RRCAGApp
 {
     public partial class SalesQuoteForm : Form
     {
+        SalesQuote salesQuote;
         public SalesQuoteForm()
         {
             InitializeComponent();
-
+            
             this.Load += SalesQuoteForm_Load;
 
-            btnCalculateQuote.Click += BtnCalculateQuote_Click;
+            this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
+            this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
+            this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
+            this.radStandard.CheckedChanged += RadStandard_CheckedChanged;
+            
+        }
+        private void RadStandard_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.errorProvider.GetError(txtVehicleSalePrice).Equals(string.Empty) && this.errorProvider.GetError(this.txtTradeInValue).Equals(string.Empty))
+            {
+                
+            }
+        }
+
+        private void TxtVehicleSalePriceOrTxtTradeInValue_TextChanged(object sender, EventArgs e)
+        {
+            ClearSummaryAndFinanceOutput();
         }
 
         private void SalesQuoteForm_Load(object sender, EventArgs e)
@@ -32,12 +49,12 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             this.txtVehicleSalePrice.Text = string.Empty;
             this.txtTradeInValue.Text = "0";
-            ClearSummaryOutput();
+            ClearSummaryAndFinanceOutput();
             this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
             this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
         }
 
-        private void ClearSummaryOutput()
+        private void ClearSummaryAndFinanceOutput()
         {
             this.lblVehicleSalePriceOutput.Text = string.Empty;
             this.lblOptionsOutput.Text = string.Empty;
@@ -106,12 +123,12 @@ namespace Franceschetti.Craig.RRCAGApp
                 if(tradeInValue > vehicleSalePrice)
                 {
                     errorProvider.SetError(txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
-                    ClearSummaryOutput();
+                    ClearSummaryAndFinanceOutput();
                 }
                 else
                 {
                     const decimal SalesTaxRate = .12m;
-                    SalesQuote salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
+                    salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
 
                     lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
 
@@ -183,7 +200,7 @@ namespace Franceschetti.Craig.RRCAGApp
             } 
             else
             {
-                ClearSummaryOutput();
+                ClearSummaryAndFinanceOutput();
             }
             
         }
