@@ -36,14 +36,14 @@ namespace Franceschetti.Craig.RRCAGApp
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
             this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
-            this.chkStereoSystem.Click += ChkStereoSystem_Click;
-            this.chkLeatherInterior.Click += ChkLeatherInterior_Click;
-            this.chkComputerNavigation.Click += ChkComputerNavigation_Click;
-            this.radStandard.Click += RadStandard_Click;
-            this.radPearlized.Click += RadPearlized_Click;
-            this.radCustomizedDetailing.Click += RadCustomizedDetailing_Click;
-            this.nudNumberOfYears.ValueChanged += NudNumberOfYears_ValueChanged;
-            this.nudAnnualInterestRate.ValueChanged += NudAnnualInterestRate_ValueChanged;
+            this.chkStereoSystem.Click += ChkAccessories_Click;
+            this.chkLeatherInterior.Click += ChkAccessories_Click;
+            this.chkComputerNavigation.Click += ChkAccessories_Click;
+            this.radStandard.Click += RadExteriorFinish_Click;
+            this.radPearlized.Click += RadExteriorFinish_Click;
+            this.radCustomizedDetailing.Click += RadExteriorFinish_Click;
+            this.nudNumberOfYears.ValueChanged += NudFinancial_ValueChanged;
+            this.nudAnnualInterestRate.ValueChanged += NudFinancial_ValueChanged;
             this.btnReset.Click += BtnReset_Click;
         }
 
@@ -142,33 +142,9 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the Click event for the StereoSystem check box.
+        /// Handles the Click event for the StereoSystem, LeatherInterior and ComputerNavigation.
         /// </summary>
-        private void ChkStereoSystem_Click(object sender, EventArgs e)
-        {
-            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
-            {
-                AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event for the LeatherInterior check box.
-        /// </summary>
-        private void ChkLeatherInterior_Click(object sender, EventArgs e)
-        {
-            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
-            {
-                AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event for the ComputerNavigation check box.
-        /// </summary>
-        private void ChkComputerNavigation_Click(object sender, EventArgs e)
+        private void ChkAccessories_Click(object sender, EventArgs e)
         {
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
@@ -180,7 +156,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// <summary>
         /// Handles the Click event for the Standard radio button.
         /// </summary>
-        private void RadStandard_Click(object sender, EventArgs e)
+        private void RadExteriorFinish_Click(object sender, EventArgs e)
         {
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
@@ -190,44 +166,9 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the Click event for the Pearlized radio button.
+        /// Handles the ValueChanged event for the NumberOfYears and AnnualInterestRate number up-downs.
         /// </summary>
-        private void RadPearlized_Click(object sender, EventArgs e)
-        {
-            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
-            {
-                ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event for the CustomizedDetailing radio button.
-        /// </summary>
-        private void RadCustomizedDetailing_Click(object sender, EventArgs e)
-        {
-            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
-            {
-                ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
-            }
-        }
-
-        /// <summary>
-        /// Handles the ValueChanged event for the NumberOfYears number up-down.
-        /// </summary>
-        private void NudNumberOfYears_ValueChanged(object sender, EventArgs e)
-        {
-            if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
-            {
-                FinancialOutput();
-            }
-        }
-
-        /// <summary>
-        /// Handles the ValueChanged event for the AnnualInterestRate number up-down.
-        /// </summary>
-        private void NudAnnualInterestRate_ValueChanged(object sender, EventArgs e)
+        private void NudFinancial_ValueChanged(object sender, EventArgs e)
         {
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
