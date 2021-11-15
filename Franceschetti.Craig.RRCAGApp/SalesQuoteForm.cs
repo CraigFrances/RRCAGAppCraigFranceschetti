@@ -166,7 +166,7 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the ValueChanged event for the NumberOfYears and AnnualInterestRate number up-downs.
+        /// Handles the ValueChanged event for the Financial number up-downs.
         /// </summary>
         private void NudFinancial_ValueChanged(object sender, EventArgs e)
         {
@@ -338,7 +338,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void FinancialOutput()
         {
-            decimal rate = nudAnnualInterestRate.Value / 100;
+            decimal rate = (nudAnnualInterestRate.Value / 100) / 12;
             int paymentPeriods = (int)nudNumberOfYears.Value * 12;
             decimal presentValue = salesQuote.AmountDue;
             decimal monthlyPaymentOutput = Financial.GetPayment(rate, paymentPeriods, presentValue);
