@@ -204,6 +204,12 @@ namespace Franceschetti.Craig.RRCAGApp
             this.txtTradeInValue.Text = "0";
             this.nudNumberOfYears.Value = 1m;
             this.nudAnnualInterestRate.Value = 5m;
+            this.chkStereoSystem.Checked = false;
+            this.chkLeatherInterior.Checked = false;
+            this.chkComputerNavigation.Checked = false;
+            this.radStandard.Checked = true;
+            this.radPearlized.Checked = false;
+            this.radCustomizedDetailing.Checked = false;
             this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
             this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
             ClearVehicleSummaryAndFinanceOutput();
