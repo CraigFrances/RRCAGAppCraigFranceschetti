@@ -44,6 +44,13 @@ namespace Franceschetti.Craig.RRCAGApp
             this.radStandard = new System.Windows.Forms.RadioButton();
             this.btnReset = new System.Windows.Forms.Button();
             this.grpSummary = new System.Windows.Forms.GroupBox();
+            this.lblVehicleSalePriceOutput = new System.Windows.Forms.Label();
+            this.lblAmountDueOutput = new System.Windows.Forms.Label();
+            this.lblTradeInOutput = new System.Windows.Forms.Label();
+            this.lblTotalOutput = new System.Windows.Forms.Label();
+            this.lblSalesTaxOutput = new System.Windows.Forms.Label();
+            this.lblSubTotalOutput = new System.Windows.Forms.Label();
+            this.lblOptionsOutput = new System.Windows.Forms.Label();
             this.lblAmountDue = new System.Windows.Forms.Label();
             this.lblTradeIn = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
@@ -52,6 +59,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblOptions = new System.Windows.Forms.Label();
             this.lblSummaryVehicleSalePrice = new System.Windows.Forms.Label();
             this.grpFinance = new System.Windows.Forms.GroupBox();
+            this.lblMonthlyPaymentFinanceOutput = new System.Windows.Forms.Label();
             this.nudAnnualInterestRate = new System.Windows.Forms.NumericUpDown();
             this.nudNumberOfYears = new System.Windows.Forms.NumericUpDown();
             this.lblMonthlyPayment = new System.Windows.Forms.Label();
@@ -59,14 +67,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblNumberOfYears = new System.Windows.Forms.Label();
             this.btnCalculateQuote = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblOptionsOutput = new System.Windows.Forms.Label();
-            this.lblSubTotalOutput = new System.Windows.Forms.Label();
-            this.lblSalesTaxOutput = new System.Windows.Forms.Label();
-            this.lblTotalOutput = new System.Windows.Forms.Label();
-            this.lblTradeInOutput = new System.Windows.Forms.Label();
-            this.lblAmountDueOutput = new System.Windows.Forms.Label();
-            this.lblVehicleSalePriceOutput = new System.Windows.Forms.Label();
-            this.lblMonthlyPaymentFinanceOutput = new System.Windows.Forms.Label();
             this.grpAccessories.SuspendLayout();
             this.grpExteriorFinish.SuspendLayout();
             this.grpSummary.SuspendLayout();
@@ -92,6 +92,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.txtVehicleSalePrice.Size = new System.Drawing.Size(129, 20);
             this.txtVehicleSalePrice.TabIndex = 1;
             this.txtVehicleSalePrice.Text = "9999";
+            this.txtVehicleSalePrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblTradeInValue
             // 
@@ -229,6 +230,77 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpSummary.TabStop = false;
             this.grpSummary.Text = "Summary";
             // 
+            // lblVehicleSalePriceOutput
+            // 
+            this.lblVehicleSalePriceOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblVehicleSalePriceOutput.Location = new System.Drawing.Point(144, 32);
+            this.lblVehicleSalePriceOutput.Name = "lblVehicleSalePriceOutput";
+            this.lblVehicleSalePriceOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblVehicleSalePriceOutput.TabIndex = 20;
+            this.lblVehicleSalePriceOutput.Text = "9999";
+            this.lblVehicleSalePriceOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblAmountDueOutput
+            // 
+            this.lblAmountDueOutput.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblAmountDueOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblAmountDueOutput.Location = new System.Drawing.Point(144, 257);
+            this.lblAmountDueOutput.Name = "lblAmountDueOutput";
+            this.lblAmountDueOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblAmountDueOutput.TabIndex = 19;
+            this.lblAmountDueOutput.Text = "9999";
+            this.lblAmountDueOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTradeInOutput
+            // 
+            this.lblTradeInOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTradeInOutput.Location = new System.Drawing.Point(144, 220);
+            this.lblTradeInOutput.Name = "lblTradeInOutput";
+            this.lblTradeInOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblTradeInOutput.TabIndex = 18;
+            this.lblTradeInOutput.Text = "9999";
+            this.lblTradeInOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblTotalOutput
+            // 
+            this.lblTotalOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblTotalOutput.Location = new System.Drawing.Point(144, 183);
+            this.lblTotalOutput.Name = "lblTotalOutput";
+            this.lblTotalOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblTotalOutput.TabIndex = 17;
+            this.lblTotalOutput.Text = "9999";
+            this.lblTotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSalesTaxOutput
+            // 
+            this.lblSalesTaxOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSalesTaxOutput.Location = new System.Drawing.Point(144, 145);
+            this.lblSalesTaxOutput.Name = "lblSalesTaxOutput";
+            this.lblSalesTaxOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblSalesTaxOutput.TabIndex = 16;
+            this.lblSalesTaxOutput.Text = "9999";
+            this.lblSalesTaxOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSubTotalOutput
+            // 
+            this.lblSubTotalOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblSubTotalOutput.Location = new System.Drawing.Point(144, 109);
+            this.lblSubTotalOutput.Name = "lblSubTotalOutput";
+            this.lblSubTotalOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblSubTotalOutput.TabIndex = 15;
+            this.lblSubTotalOutput.Text = "9999";
+            this.lblSubTotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblOptionsOutput
+            // 
+            this.lblOptionsOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblOptionsOutput.Location = new System.Drawing.Point(144, 71);
+            this.lblOptionsOutput.Name = "lblOptionsOutput";
+            this.lblOptionsOutput.Size = new System.Drawing.Size(126, 20);
+            this.lblOptionsOutput.TabIndex = 14;
+            this.lblOptionsOutput.Text = "9999";
+            this.lblOptionsOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // lblAmountDue
             // 
             this.lblAmountDue.AutoSize = true;
@@ -306,6 +378,17 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpFinance.TabIndex = 8;
             this.grpFinance.TabStop = false;
             this.grpFinance.Text = "Finance";
+            // 
+            // lblMonthlyPaymentFinanceOutput
+            // 
+            this.lblMonthlyPaymentFinanceOutput.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.lblMonthlyPaymentFinanceOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblMonthlyPaymentFinanceOutput.Location = new System.Drawing.Point(201, 59);
+            this.lblMonthlyPaymentFinanceOutput.Name = "lblMonthlyPaymentFinanceOutput";
+            this.lblMonthlyPaymentFinanceOutput.Size = new System.Drawing.Size(88, 20);
+            this.lblMonthlyPaymentFinanceOutput.TabIndex = 21;
+            this.lblMonthlyPaymentFinanceOutput.Text = "9999";
+            this.lblMonthlyPaymentFinanceOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // nudAnnualInterestRate
             // 
@@ -391,88 +474,6 @@ namespace Franceschetti.Craig.RRCAGApp
             // 
             this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider.ContainerControl = this;
-            // 
-            // lblOptionsOutput
-            // 
-            this.lblOptionsOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblOptionsOutput.Location = new System.Drawing.Point(144, 71);
-            this.lblOptionsOutput.Name = "lblOptionsOutput";
-            this.lblOptionsOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblOptionsOutput.TabIndex = 14;
-            this.lblOptionsOutput.Text = "9999";
-            this.lblOptionsOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblSubTotalOutput
-            // 
-            this.lblSubTotalOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSubTotalOutput.Location = new System.Drawing.Point(144, 109);
-            this.lblSubTotalOutput.Name = "lblSubTotalOutput";
-            this.lblSubTotalOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblSubTotalOutput.TabIndex = 15;
-            this.lblSubTotalOutput.Text = "9999";
-            this.lblSubTotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblSalesTaxOutput
-            // 
-            this.lblSalesTaxOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblSalesTaxOutput.Location = new System.Drawing.Point(144, 145);
-            this.lblSalesTaxOutput.Name = "lblSalesTaxOutput";
-            this.lblSalesTaxOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblSalesTaxOutput.TabIndex = 16;
-            this.lblSalesTaxOutput.Text = "9999";
-            this.lblSalesTaxOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTotalOutput
-            // 
-            this.lblTotalOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTotalOutput.Location = new System.Drawing.Point(144, 183);
-            this.lblTotalOutput.Name = "lblTotalOutput";
-            this.lblTotalOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblTotalOutput.TabIndex = 17;
-            this.lblTotalOutput.Text = "9999";
-            this.lblTotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblTradeInOutput
-            // 
-            this.lblTradeInOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTradeInOutput.Location = new System.Drawing.Point(144, 220);
-            this.lblTradeInOutput.Name = "lblTradeInOutput";
-            this.lblTradeInOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblTradeInOutput.TabIndex = 18;
-            this.lblTradeInOutput.Text = "9999";
-            this.lblTradeInOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblAmountDueOutput
-            // 
-            this.lblAmountDueOutput.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.lblAmountDueOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblAmountDueOutput.Location = new System.Drawing.Point(144, 257);
-            this.lblAmountDueOutput.Name = "lblAmountDueOutput";
-            this.lblAmountDueOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblAmountDueOutput.TabIndex = 19;
-            this.lblAmountDueOutput.Text = "9999";
-            this.lblAmountDueOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblVehicleSalePriceOutput
-            // 
-            this.lblVehicleSalePriceOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblVehicleSalePriceOutput.Location = new System.Drawing.Point(144, 32);
-            this.lblVehicleSalePriceOutput.Name = "lblVehicleSalePriceOutput";
-            this.lblVehicleSalePriceOutput.Size = new System.Drawing.Size(126, 20);
-            this.lblVehicleSalePriceOutput.TabIndex = 20;
-            this.lblVehicleSalePriceOutput.Text = "9999";
-            this.lblVehicleSalePriceOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lblMonthlyPaymentFinanceOutput
-            // 
-            this.lblMonthlyPaymentFinanceOutput.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.lblMonthlyPaymentFinanceOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblMonthlyPaymentFinanceOutput.Location = new System.Drawing.Point(201, 59);
-            this.lblMonthlyPaymentFinanceOutput.Name = "lblMonthlyPaymentFinanceOutput";
-            this.lblMonthlyPaymentFinanceOutput.Size = new System.Drawing.Size(88, 20);
-            this.lblMonthlyPaymentFinanceOutput.TabIndex = 21;
-            this.lblMonthlyPaymentFinanceOutput.Text = "9999";
-            this.lblMonthlyPaymentFinanceOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // SalesQuoteForm
             // 

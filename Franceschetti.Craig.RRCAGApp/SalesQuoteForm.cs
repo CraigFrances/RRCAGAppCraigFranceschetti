@@ -142,7 +142,7 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the Click event for the StereoSystem, LeatherInterior and ComputerNavigation.
+        /// Handles the Click event for the Accessories check boxes.
         /// </summary>
         private void ChkAccessories_Click(object sender, EventArgs e)
         {
@@ -154,7 +154,7 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the Click event for the Standard radio button.
+        /// Handles the Click event for the Exterior Finish radio buttons.
         /// </summary>
         private void RadExteriorFinish_Click(object sender, EventArgs e)
         {
