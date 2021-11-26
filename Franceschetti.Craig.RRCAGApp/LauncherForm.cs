@@ -28,9 +28,16 @@ namespace Franceschetti.Craig.RRCAGApp
         public LauncherForm()
         {
             InitializeComponent();
-            mnuFileOpenSalesQuote.Click += MnuFileOpen_Click;
+            mnuFileOpenSalesQuote.Click += MnuFileOpenSalesQuote_Click;
             mnuHelpAbout.Click += MnuHelpAbout_Click;
             mnuFileExit.Click += MnuFileExit_Click;
+            mnuFileOpenCarWash.Click += MnuFileOpenCarWash_Click;
+        }
+
+        private void MnuFileOpenCarWash_Click(object sender, EventArgs e)
+        {
+            CarWashEntryForm carWashEntryForm = new CarWashEntryForm();
+            carWashEntryForm.ShowDialog();
         }
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// <summary>
         /// Handles the Click event of the open menu item for SalesQuote.
         /// </summary>
-        private void MnuFileOpen_Click(object sender, EventArgs e)
+        private void MnuFileOpenSalesQuote_Click(object sender, EventArgs e)
         {
             SalesQuoteForm salesQuoteForm = new SalesQuoteForm();
             salesQuoteForm.ShowDialog();
