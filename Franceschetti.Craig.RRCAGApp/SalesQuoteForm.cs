@@ -25,7 +25,7 @@ namespace Franceschetti.Craig.RRCAGApp
     public partial class SalesQuoteForm : Form
     {
         private SalesQuote salesQuote;
-        
+
         /// <summary>
         /// Initializes the SalesQuoteForm.
         /// </summary>
@@ -187,7 +187,7 @@ namespace Franceschetti.Craig.RRCAGApp
             const MessageBoxIcon Warning = MessageBoxIcon.Warning;
             const MessageBoxDefaultButton DefaultButton = MessageBoxDefaultButton.Button2;
             DialogResult messageBoxDialogResult = MessageBox.Show(this, Message, Caption, Buttons, Warning, DefaultButton);
-            
+
             if (messageBoxDialogResult.Equals(DialogResult.Yes))
             {
                 SalesQuoteFormInitialState();

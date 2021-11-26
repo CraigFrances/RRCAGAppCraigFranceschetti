@@ -66,7 +66,19 @@
     <Compile Include="CarWashEntryForm.Designer.cs">
       <DependentUpon>CarWashEntryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CarWashInvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CarWashInvoiceForm.Designer.cs">
+      <DependentUpon>CarWashInvoiceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Fragrance.cs" />
+    <Compile Include="InvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InvoiceForm.Designer.cs">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="LauncherForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +99,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CarWashEntryForm.resx">
       <DependentUpon>CarWashEntryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CarWashInvoiceForm.resx">
+      <DependentUpon>CarWashInvoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InvoiceForm.resx">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LauncherForm.resx">
       <DependentUpon>LauncherForm.cs</DependentUpon>

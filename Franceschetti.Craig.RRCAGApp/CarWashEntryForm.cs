@@ -24,6 +24,7 @@ namespace Franceschetti.Craig.RRCAGApp
         List<string> interiorMasterList;
         List<string> exteriorMasterList;
         CarWashInvoice carWashInvoice;
+        
 
 
         public CarWashEntryForm()
@@ -33,12 +34,28 @@ namespace Franceschetti.Craig.RRCAGApp
             ObtainFragranceDescriptionInput();
             PackageInput();
             InteriorAndExteriorFinish();
+            
+
             BindingControls();
+            CarWashBind();
 
             this.fragranceSource.PositionChanged += PackageSourceOrFragranceSource_PositionChanged;
             this.packageSource.PositionChanged += PackageSourceOrFragranceSource_PositionChanged;
+            this.mnuFileGenerateInvoice.Click += MnuFileGenerateInvoice_Click;
+            this.mnuFileExit.Click += MnuFileExit_Click;
 
 
+        }
+
+        private void MnuFileExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void MnuFileGenerateInvoice_Click(object sender, EventArgs e)
+        {
+            CarWashInvoiceForm carWashInvoiceForm = new CarWashInvoiceForm(this.fragranceSource, this.packageSource, this.carWashSource);
+            carWashInvoiceForm.ShowDialog();
         }
 
         private void InteriorAndExteriorFinish()
@@ -62,7 +79,7 @@ namespace Franceschetti.Craig.RRCAGApp
             exteriorMasterList.Add("Hand Wax");
             exteriorMasterList.Add("Wheel Polish");
             exteriorMasterList.Add("Detail Engine Compartment");
-
+            
             interiorServices.Add(interiorMasterList[0]);
             exteriorServices.Add(exteriorMasterList[0]);
 
@@ -72,6 +89,10 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void PackageSourceOrFragranceSource_PositionChanged(object sender, EventArgs e)
         {
+            lblSubtotalOutput.DataBindings.Clear();
+            lblPSTOutput.DataBindings.Clear();
+            lblGSTOutput.DataBindings.Clear();
+            lblTotalOutput.DataBindings.Clear();
             interiorServices.Clear();
             exteriorServices.Clear();
             string fragranceSelected = $"Fragrance - {((Fragrance)cboFragrance.SelectedItem).FragranceDescription}";
@@ -82,9 +103,36 @@ namespace Franceschetti.Craig.RRCAGApp
                 interiorServices.Add(interiorMasterList[i]);
                 exteriorServices.Add(exteriorMasterList[i]);
             }
-
             interiorServices[0] = fragranceSelected;
+            CarWashBind();
 
+        }
+
+        private void CarWashBind()
+        {
+            carWashSource = new BindingSource();
+            carWashInvoice = new CarWashInvoice(.07m, .05m, ((Package)cboPackage.SelectedItem).PackagePrice, ((Fragrance)cboFragrance.SelectedItem).FragrancePrice);
+            this.carWashSource.DataSource = carWashInvoice;
+
+            Binding subTotal = new Binding("Text", carWashSource, "SubTotal");
+            subTotal.FormattingEnabled = true;
+            subTotal.FormatString = "C";
+            lblSubtotalOutput.DataBindings.Add(subTotal);
+
+            Binding provincialSalesTax = new Binding("Text", carWashSource, "ProvincialSalesTaxCharged");
+            provincialSalesTax.FormattingEnabled = true;
+            provincialSalesTax.FormatString = "N2";
+            lblPSTOutput.DataBindings.Add(provincialSalesTax);
+
+            Binding goodsAndServicesSalesTax = new Binding("Text", carWashSource, "GoodsAndServicesTaxCharged");
+            goodsAndServicesSalesTax.FormattingEnabled = true;
+            goodsAndServicesSalesTax.FormatString = "N2";
+            lblGSTOutput.DataBindings.Add(goodsAndServicesSalesTax);
+
+            Binding total = new Binding("Text", carWashSource, "Total");
+            total.FormattingEnabled = true;
+            total.FormatString = "C";
+            lblTotalOutput.DataBindings.Add(total);
         }
 
         private void PackageInput()
@@ -125,6 +173,7 @@ namespace Franceschetti.Craig.RRCAGApp
                 decimal fragranceDecimal = Decimal.Parse(fragrancePrice.TrimEnd(','));
                 fragranceList.Add(new Fragrance (fragranceDescription, fragranceDecimal));
             }
+            
         }
 
         private void BindingControls()
@@ -137,6 +186,7 @@ namespace Franceschetti.Craig.RRCAGApp
             cboPackage.ValueMember = "PackagePrice";
             lstInterior.DataSource = this.interiorSource;
             lstExterior.DataSource = this.exteriorSource;
+           
         }
     }
 }

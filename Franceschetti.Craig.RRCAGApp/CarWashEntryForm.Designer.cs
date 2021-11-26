@@ -32,17 +32,17 @@ namespace Franceschetti.Craig.RRCAGApp
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileGenerateInvoice = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.lblPackage = new System.Windows.Forms.Label();
             this.cboPackage = new System.Windows.Forms.ComboBox();
             this.cboFragrance = new System.Windows.Forms.ComboBox();
             this.lblFragrance = new System.Windows.Forms.Label();
             this.grpSummary = new System.Windows.Forms.GroupBox();
-            this.lblInterior = new System.Windows.Forms.Label();
-            this.lblExterior = new System.Windows.Forms.Label();
-            this.lstInterior = new System.Windows.Forms.ListBox();
             this.lstExterior = new System.Windows.Forms.ListBox();
+            this.lstInterior = new System.Windows.Forms.ListBox();
+            this.lblExterior = new System.Windows.Forms.Label();
+            this.lblInterior = new System.Windows.Forms.Label();
             this.lblSubtotal = new System.Windows.Forms.Label();
             this.lblSubtotalOutput = new System.Windows.Forms.Label();
             this.lblPST = new System.Windows.Forms.Label();
@@ -83,17 +83,17 @@ namespace Franceschetti.Craig.RRCAGApp
             this.mnuFileGenerateInvoice.Size = new System.Drawing.Size(231, 22);
             this.mnuFileGenerateInvoice.Text = "Generate &Invoice";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(228, 6);
+            // 
             // mnuFileExit
             // 
             this.mnuFileExit.Name = "mnuFileExit";
             this.mnuFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.mnuFileExit.Size = new System.Drawing.Size(231, 22);
             this.mnuFileExit.Text = "E&xit";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(228, 6);
             // 
             // lblPackage
             // 
@@ -111,7 +111,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.cboPackage.Location = new System.Drawing.Point(29, 72);
             this.cboPackage.Name = "cboPackage";
             this.cboPackage.Size = new System.Drawing.Size(160, 21);
-            this.cboPackage.TabIndex = 2;
+            this.cboPackage.TabIndex = 1;
             // 
             // cboFragrance
             // 
@@ -120,7 +120,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.cboFragrance.Location = new System.Drawing.Point(224, 72);
             this.cboFragrance.Name = "cboFragrance";
             this.cboFragrance.Size = new System.Drawing.Size(160, 21);
-            this.cboFragrance.TabIndex = 4;
+            this.cboFragrance.TabIndex = 2;
             // 
             // lblFragrance
             // 
@@ -144,14 +144,25 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpSummary.TabStop = false;
             this.grpSummary.Text = "Summary";
             // 
-            // lblInterior
+            // lstExterior
             // 
-            this.lblInterior.AutoSize = true;
-            this.lblInterior.Location = new System.Drawing.Point(17, 30);
-            this.lblInterior.Name = "lblInterior";
-            this.lblInterior.Size = new System.Drawing.Size(42, 13);
-            this.lblInterior.TabIndex = 0;
-            this.lblInterior.Text = "Interior:";
+            this.lstExterior.FormattingEnabled = true;
+            this.lstExterior.Location = new System.Drawing.Point(212, 55);
+            this.lstExterior.Name = "lstExterior";
+            this.lstExterior.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.lstExterior.Size = new System.Drawing.Size(160, 95);
+            this.lstExterior.TabIndex = 3;
+            this.lstExterior.TabStop = false;
+            // 
+            // lstInterior
+            // 
+            this.lstInterior.FormattingEnabled = true;
+            this.lstInterior.Location = new System.Drawing.Point(17, 55);
+            this.lstInterior.Name = "lstInterior";
+            this.lstInterior.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.lstInterior.Size = new System.Drawing.Size(160, 95);
+            this.lstInterior.TabIndex = 2;
+            this.lstInterior.TabStop = false;
             // 
             // lblExterior
             // 
@@ -162,23 +173,14 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblExterior.TabIndex = 1;
             this.lblExterior.Text = "Exterior:";
             // 
-            // lstInterior
+            // lblInterior
             // 
-            this.lstInterior.FormattingEnabled = true;
-            this.lstInterior.Location = new System.Drawing.Point(17, 55);
-            this.lstInterior.Name = "lstInterior";
-            this.lstInterior.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lstInterior.Size = new System.Drawing.Size(160, 95);
-            this.lstInterior.TabIndex = 2;
-            // 
-            // lstExterior
-            // 
-            this.lstExterior.FormattingEnabled = true;
-            this.lstExterior.Location = new System.Drawing.Point(212, 55);
-            this.lstExterior.Name = "lstExterior";
-            this.lstExterior.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lstExterior.Size = new System.Drawing.Size(160, 95);
-            this.lstExterior.TabIndex = 3;
+            this.lblInterior.AutoSize = true;
+            this.lblInterior.Location = new System.Drawing.Point(17, 30);
+            this.lblInterior.Name = "lblInterior";
+            this.lblInterior.Size = new System.Drawing.Size(42, 13);
+            this.lblInterior.TabIndex = 0;
+            this.lblInterior.Text = "Interior:";
             // 
             // lblSubtotal
             // 
@@ -196,6 +198,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblSubtotalOutput.Name = "lblSubtotalOutput";
             this.lblSubtotalOutput.Size = new System.Drawing.Size(108, 23);
             this.lblSubtotalOutput.TabIndex = 7;
+            this.lblSubtotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblPST
             // 
@@ -213,6 +216,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblPSTOutput.Name = "lblPSTOutput";
             this.lblPSTOutput.Size = new System.Drawing.Size(108, 23);
             this.lblPSTOutput.TabIndex = 9;
+            this.lblPSTOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblGSTOutput
             // 
@@ -221,6 +225,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblGSTOutput.Name = "lblGSTOutput";
             this.lblGSTOutput.Size = new System.Drawing.Size(108, 23);
             this.lblGSTOutput.TabIndex = 10;
+            this.lblGSTOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblTotalOutput
             // 
@@ -230,6 +235,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblTotalOutput.Name = "lblTotalOutput";
             this.lblTotalOutput.Size = new System.Drawing.Size(108, 23);
             this.lblTotalOutput.TabIndex = 11;
+            this.lblTotalOutput.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblGST
             // 
