@@ -120,6 +120,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "InvoiceForm";
+            this.ShowIcon = false;
             this.Text = "[Form Title]";
             this.ResumeLayout(false);
             this.PerformLayout();

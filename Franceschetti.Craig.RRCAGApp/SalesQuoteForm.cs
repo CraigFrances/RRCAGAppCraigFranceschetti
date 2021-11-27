@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Franceschetti.Craig.Buisness;
 using Franceschetti.Craig.RRCAG;
+using RRCAG.Data;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
@@ -24,7 +25,11 @@ namespace Franceschetti.Craig.RRCAGApp
     /// </summary>
     public partial class SalesQuoteForm : Form
     {
+        
         private SalesQuote salesQuote;
+        BindingList<Vehicle> vehicles;
+        BindingSource salesQuoteSource;
+        BindingSource vehicleSource;
 
         /// <summary>
         /// Initializes the SalesQuoteForm.
@@ -33,6 +38,16 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             InitializeComponent();
             this.Load += SalesQuoteForm_Load;
+            vehicles = new BindingList<Vehicle>(DataRetriever.GetVehicles());
+            vehicleSource = new BindingSource();
+
+            vehicleSource.DataSource = vehicles;
+            salesQuoteSource = new BindingSource();
+            salesQuoteSource.DataSource = salesQuote;
+
+
+            BindControls();
+
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
             this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
@@ -47,12 +62,20 @@ namespace Franceschetti.Craig.RRCAGApp
             this.btnReset.Click += BtnReset_Click;
         }
 
+        private void BindControls()
+        {
+            cboVehicle.DataSource = vehicleSource;
+            cboVehicle.DisplayMember = "StockID";
+            cboVehicle.ValueMember = "BasePrice";
+        }
+
         /// <summary>
         /// Handles the Load event of the SalesQuoteForm.
         /// </summary>
         private void SalesQuoteForm_Load(object sender, EventArgs e)
         {
             SalesQuoteFormInitialState();
+            
         }
 
 
@@ -62,6 +85,19 @@ namespace Franceschetti.Craig.RRCAGApp
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
         {
             ResetErrorIcons();
+
+            
+           if(!(cboVehicle.SelectedItem != null))
+            {
+                this.errorProvider.SetError(this.cboVehicle, "A vehicle must be selected.");
+            }
+           else
+           {
+                mnuViewVehicleInformation.Enabled = true;
+           }
+           
+      
+
             decimal vehicleSalePrice;
             decimal tradeInValue;
 
@@ -210,7 +246,9 @@ namespace Franceschetti.Craig.RRCAGApp
             this.radStandard.Checked = true;
             this.radPearlized.Checked = false;
             this.radCustomizedDetailing.Checked = false;
-            this.errorProvider.SetIconPadding(this.txtVehicleSalePrice, 3);
+            this.cboVehicle.SelectedItem = null;
+            this.mnuViewVehicleInformation.Enabled = false;
+            this.errorProvider.SetIconPadding(this.cboVehicle, 3);
             this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
             ClearVehicleSummaryAndFinanceOutput();
             ResetErrorIcons();
@@ -237,7 +275,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void ResetErrorIcons()
         {
-            this.errorProvider.SetError(this.txtVehicleSalePrice, string.Empty);
+            this.errorProvider.SetError(this.cboVehicle, string.Empty);
             this.errorProvider.SetError(this.txtTradeInValue, string.Empty);
         }
 

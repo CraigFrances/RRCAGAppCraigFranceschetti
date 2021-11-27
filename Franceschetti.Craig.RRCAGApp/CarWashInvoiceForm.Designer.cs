@@ -147,7 +147,9 @@ namespace Franceschetti.Craig.RRCAGApp
             this.Controls.Add(this.lblFragrancePriceOutput);
             this.Controls.Add(this.lblPackagePriceOutput);
             this.Name = "CarWashInvoiceForm";
+            this.ShowIcon = false;
             this.Text = "Car Wash Invoice";
+            this.Controls.SetChildIndex(this.lblInvoiceTitle, 0);
             this.Controls.SetChildIndex(this.lblPackagePriceOutput, 0);
             this.Controls.SetChildIndex(this.lblFragrancePriceOutput, 0);
             this.Controls.SetChildIndex(this.lblSubTotalOutput, 0);

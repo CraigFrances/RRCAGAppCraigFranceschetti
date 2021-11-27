@@ -67,6 +67,12 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblNumberOfYears = new System.Windows.Forms.Label();
             this.btnCalculateQuote = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cboVehicle = new System.Windows.Forms.ComboBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuViewVehicleInformation = new System.Windows.Forms.ToolStripMenuItem();
             this.grpAccessories.SuspendLayout();
             this.grpExteriorFinish.SuspendLayout();
             this.grpSummary.SuspendLayout();
@@ -74,20 +80,21 @@ namespace Franceschetti.Craig.RRCAGApp
             ((System.ComponentModel.ISupportInitialize)(this.nudAnnualInterestRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNumberOfYears)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblVehicleSalePrice
             // 
             this.lblVehicleSalePrice.AutoSize = true;
-            this.lblVehicleSalePrice.Location = new System.Drawing.Point(21, 25);
+            this.lblVehicleSalePrice.Location = new System.Drawing.Point(80, 36);
             this.lblVehicleSalePrice.Name = "lblVehicleSalePrice";
-            this.lblVehicleSalePrice.Size = new System.Drawing.Size(103, 13);
+            this.lblVehicleSalePrice.Size = new System.Drawing.Size(45, 13);
             this.lblVehicleSalePrice.TabIndex = 0;
-            this.lblVehicleSalePrice.Text = "Vehicle\'s Sale Price:";
+            this.lblVehicleSalePrice.Text = "Vehicle:";
             // 
             // txtVehicleSalePrice
             // 
-            this.txtVehicleSalePrice.Location = new System.Drawing.Point(130, 22);
+            this.txtVehicleSalePrice.Location = new System.Drawing.Point(147, 278);
             this.txtVehicleSalePrice.Name = "txtVehicleSalePrice";
             this.txtVehicleSalePrice.Size = new System.Drawing.Size(129, 20);
             this.txtVehicleSalePrice.TabIndex = 1;
@@ -97,7 +104,7 @@ namespace Franceschetti.Craig.RRCAGApp
             // lblTradeInValue
             // 
             this.lblTradeInValue.AutoSize = true;
-            this.lblTradeInValue.Location = new System.Drawing.Point(45, 62);
+            this.lblTradeInValue.Location = new System.Drawing.Point(45, 73);
             this.lblTradeInValue.Name = "lblTradeInValue";
             this.lblTradeInValue.Size = new System.Drawing.Size(79, 13);
             this.lblTradeInValue.TabIndex = 2;
@@ -105,7 +112,7 @@ namespace Franceschetti.Craig.RRCAGApp
             // 
             // txtTradeInValue
             // 
-            this.txtTradeInValue.Location = new System.Drawing.Point(130, 59);
+            this.txtTradeInValue.Location = new System.Drawing.Point(130, 70);
             this.txtTradeInValue.Name = "txtTradeInValue";
             this.txtTradeInValue.Size = new System.Drawing.Size(129, 20);
             this.txtTradeInValue.TabIndex = 2;
@@ -117,7 +124,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpAccessories.Controls.Add(this.chkComputerNavigation);
             this.grpAccessories.Controls.Add(this.chkLeatherInterior);
             this.grpAccessories.Controls.Add(this.chkStereoSystem);
-            this.grpAccessories.Location = new System.Drawing.Point(24, 104);
+            this.grpAccessories.Location = new System.Drawing.Point(24, 115);
             this.grpAccessories.Name = "grpAccessories";
             this.grpAccessories.Size = new System.Drawing.Size(235, 157);
             this.grpAccessories.TabIndex = 4;
@@ -159,7 +166,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpExteriorFinish.Controls.Add(this.radCustomizedDetailing);
             this.grpExteriorFinish.Controls.Add(this.radPearlized);
             this.grpExteriorFinish.Controls.Add(this.radStandard);
-            this.grpExteriorFinish.Location = new System.Drawing.Point(24, 287);
+            this.grpExteriorFinish.Location = new System.Drawing.Point(24, 298);
             this.grpExteriorFinish.Name = "grpExteriorFinish";
             this.grpExteriorFinish.Size = new System.Drawing.Size(235, 153);
             this.grpExteriorFinish.TabIndex = 5;
@@ -200,7 +207,7 @@ namespace Franceschetti.Craig.RRCAGApp
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(24, 455);
+            this.btnReset.Location = new System.Drawing.Point(24, 466);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 30);
             this.btnReset.TabIndex = 10;
@@ -223,7 +230,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpSummary.Controls.Add(this.lblSubtotal);
             this.grpSummary.Controls.Add(this.lblOptions);
             this.grpSummary.Controls.Add(this.lblSummaryVehicleSalePrice);
-            this.grpSummary.Location = new System.Drawing.Point(297, 15);
+            this.grpSummary.Location = new System.Drawing.Point(297, 26);
             this.grpSummary.Name = "grpSummary";
             this.grpSummary.Size = new System.Drawing.Size(307, 307);
             this.grpSummary.TabIndex = 7;
@@ -372,7 +379,7 @@ namespace Franceschetti.Craig.RRCAGApp
             this.grpFinance.Controls.Add(this.lblMonthlyPayment);
             this.grpFinance.Controls.Add(this.lblAnnualInterestRate);
             this.grpFinance.Controls.Add(this.lblNumberOfYears);
-            this.grpFinance.Location = new System.Drawing.Point(297, 328);
+            this.grpFinance.Location = new System.Drawing.Point(297, 339);
             this.grpFinance.Name = "grpFinance";
             this.grpFinance.Size = new System.Drawing.Size(307, 112);
             this.grpFinance.TabIndex = 8;
@@ -463,7 +470,7 @@ namespace Franceschetti.Craig.RRCAGApp
             // 
             // btnCalculateQuote
             // 
-            this.btnCalculateQuote.Location = new System.Drawing.Point(495, 455);
+            this.btnCalculateQuote.Location = new System.Drawing.Point(495, 466);
             this.btnCalculateQuote.Name = "btnCalculateQuote";
             this.btnCalculateQuote.Size = new System.Drawing.Size(109, 30);
             this.btnCalculateQuote.TabIndex = 9;
@@ -475,12 +482,64 @@ namespace Franceschetti.Craig.RRCAGApp
             this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider.ContainerControl = this;
             // 
+            // cboVehicle
+            // 
+            this.cboVehicle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboVehicle.FormattingEnabled = true;
+            this.cboVehicle.Location = new System.Drawing.Point(131, 33);
+            this.cboVehicle.Name = "cboVehicle";
+            this.cboVehicle.Size = new System.Drawing.Size(128, 21);
+            this.cboVehicle.TabIndex = 11;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile,
+            this.mnuView});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(628, 24);
+            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // mnuFile
+            // 
+            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFileClose});
+            this.mnuFile.Name = "mnuFile";
+            this.mnuFile.Size = new System.Drawing.Size(37, 20);
+            this.mnuFile.Text = "&File";
+            // 
+            // mnuView
+            // 
+            this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuViewVehicleInformation});
+            this.mnuView.Name = "mnuView";
+            this.mnuView.Size = new System.Drawing.Size(44, 20);
+            this.mnuView.Text = "&View";
+            // 
+            // mnuFileClose
+            // 
+            this.mnuFileClose.Name = "mnuFileClose";
+            this.mnuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mnuFileClose.Size = new System.Drawing.Size(180, 22);
+            this.mnuFileClose.Text = "&Close";
+            // 
+            // mnuViewVehicleInformation
+            // 
+            this.mnuViewVehicleInformation.Name = "mnuViewVehicleInformation";
+            this.mnuViewVehicleInformation.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.I)));
+            this.mnuViewVehicleInformation.Size = new System.Drawing.Size(246, 22);
+            this.mnuViewVehicleInformation.Text = "Vehicle &Information";
+            // 
             // SalesQuoteForm
             // 
             this.AcceptButton = this.btnCalculateQuote;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 494);
+            this.ClientSize = new System.Drawing.Size(628, 508);
+            this.Controls.Add(this.cboVehicle);
             this.Controls.Add(this.btnCalculateQuote);
             this.Controls.Add(this.grpFinance);
             this.Controls.Add(this.grpSummary);
@@ -491,7 +550,9 @@ namespace Franceschetti.Craig.RRCAGApp
             this.Controls.Add(this.lblTradeInValue);
             this.Controls.Add(this.txtVehicleSalePrice);
             this.Controls.Add(this.lblVehicleSalePrice);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "SalesQuoteForm";
             this.Text = "Vehicle Sales Quote";
@@ -506,6 +567,8 @@ namespace Franceschetti.Craig.RRCAGApp
             ((System.ComponentModel.ISupportInitialize)(this.nudAnnualInterestRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudNumberOfYears)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -550,5 +613,11 @@ namespace Franceschetti.Craig.RRCAGApp
         private System.Windows.Forms.Label lblSubTotalOutput;
         private System.Windows.Forms.Label lblOptionsOutput;
         private System.Windows.Forms.Label lblMonthlyPaymentFinanceOutput;
+        private System.Windows.Forms.ComboBox cboVehicle;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem mnuFile;
+        private System.Windows.Forms.ToolStripMenuItem mnuFileClose;
+        private System.Windows.Forms.ToolStripMenuItem mnuView;
+        private System.Windows.Forms.ToolStripMenuItem mnuViewVehicleInformation;
     }
 }
