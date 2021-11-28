@@ -27,11 +27,10 @@ namespace Franceschetti.Craig.RRCAGApp
     {
         
         private SalesQuote salesQuote;
-        BindingList<Vehicle> vehicles;
-        BindingSource salesQuoteSource;
-        BindingSource vehicleSource;
-        Binding optionsBind;
-        private decimal tradeInValue;
+        private BindingList<Vehicle> vehicles;
+        private BindingSource salesQuoteSource;
+        private BindingSource vehicleSource;
+        
 
         /// <summary>
         /// Initializes the SalesQuoteForm.
@@ -46,12 +45,14 @@ namespace Franceschetti.Craig.RRCAGApp
 
             vehicles = new BindingList<Vehicle>(DataRetriever.GetVehicles());
             vehicleSource = new BindingSource();
+            
             vehicleSource.DataSource = vehicles;
+            
+            salesQuoteSource.DataSource = typeof(SalesQuote);
 
 
             BindControls();
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
-            this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.chkStereoSystem.Click += ChkAccessories_Click;
             this.chkLeatherInterior.Click += ChkAccessories_Click;
@@ -92,8 +93,10 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void BindControls()
         {
+
             cboVehicle.DataSource = vehicleSource;
             cboVehicle.DisplayMember = "StockID";
+            VehicleSummaryBindedOutput();
         }
 
         /// <summary>
@@ -111,7 +114,7 @@ namespace Franceschetti.Craig.RRCAGApp
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
         {
             ResetErrorIcons();
-            ClearBinds();
+            decimal tradeInValue;
 
             if (!(cboVehicle.SelectedItem != null))
             {
@@ -142,17 +145,13 @@ namespace Franceschetti.Craig.RRCAGApp
                 if (this.errorProvider.GetError(txtTradeInValue).Equals(string.Empty))
                 {
 
-                    
-
                     tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
                     const decimal SalesTaxRate = .12m;
                     salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, tradeInValue, SalesTaxRate);
-                   
-                    salesQuoteSource.DataSource = salesQuote;
-
                     AccessoriesChosen();
                     ExteriorFinishChosen();
-                    VehicleSummaryBindedOutput();
+
+                    salesQuoteSource.DataSource = salesQuote;
 
                     if (tradeInValue > ((Vehicle)cboVehicle.SelectedItem).BasePrice)
                     {
@@ -172,28 +171,18 @@ namespace Franceschetti.Craig.RRCAGApp
             }
         }
 
-        private void ClearBinds()
-        {
-            lblVehicleSalePriceOutput.DataBindings.Clear();
-            lblSubTotalOutput.DataBindings.Clear();
-            lblOptionsOutput.DataBindings.Clear();
-            lblSalesTaxOutput.DataBindings.Clear();
-            lblTotalOutput.DataBindings.Clear();
-            lblTradeInOutput.DataBindings.Clear();
-            lblAmountDueOutput.DataBindings.Clear();
-        }
 
         private void VehicleSummaryBindedOutput()
         {
-            ClearBinds();
+            
             Binding vehicleSalePriceBind = new Binding("Text", salesQuoteSource, "VehicleSalePrice");
             vehicleSalePriceBind.FormattingEnabled = true;
             vehicleSalePriceBind.FormatString = "C";
             lblVehicleSalePriceOutput.DataBindings.Add(vehicleSalePriceBind);
 
-            this.optionsBind = new Binding("Text", salesQuoteSource, "FinishCost");
-            this.optionsBind.Format += OptionsBind_Format;
-            lblOptionsOutput.DataBindings.Add(this.optionsBind);
+            Binding optionsBind = new Binding("Text", salesQuoteSource, "FinishCost");
+            optionsBind.Format += OptionsBind_Format;
+            lblOptionsOutput.DataBindings.Add(optionsBind);
 
 
             Binding subTotal = new Binding("Text", salesQuoteSource, "SubTotal");
@@ -243,8 +232,8 @@ namespace Franceschetti.Craig.RRCAGApp
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
                 AccessoriesChosen();
-                VehicleSummaryBindedOutput();
                 FinancialOutput();
+                salesQuoteSource.ResetBindings(false);
             }
         }
 
@@ -256,8 +245,8 @@ namespace Franceschetti.Craig.RRCAGApp
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
                 ExteriorFinishChosen();
-                VehicleSummaryBindedOutput();
                 FinancialOutput();
+                salesQuoteSource.ResetBindings(false);
             }
         }
 
@@ -295,8 +284,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void SalesQuoteFormInitialState()
         {
-            this.txtVehicleSalePrice.Focus();
-            this.txtVehicleSalePrice.Text = string.Empty;
+            this.cboVehicle.Focus();
             this.txtTradeInValue.Text = "0";
             this.nudNumberOfYears.Value = 1m;
             this.nudAnnualInterestRate.Value = 5m;

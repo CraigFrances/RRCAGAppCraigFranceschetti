@@ -31,7 +31,6 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             this.components = new System.ComponentModel.Container();
             this.lblVehicleSalePrice = new System.Windows.Forms.Label();
-            this.txtVehicleSalePrice = new System.Windows.Forms.TextBox();
             this.lblTradeInValue = new System.Windows.Forms.Label();
             this.txtTradeInValue = new System.Windows.Forms.TextBox();
             this.grpAccessories = new System.Windows.Forms.GroupBox();
@@ -70,8 +69,8 @@ namespace Franceschetti.Craig.RRCAGApp
             this.cboVehicle = new System.Windows.Forms.ComboBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuViewVehicleInformation = new System.Windows.Forms.ToolStripMenuItem();
             this.grpAccessories.SuspendLayout();
             this.grpExteriorFinish.SuspendLayout();
@@ -91,15 +90,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblVehicleSalePrice.Size = new System.Drawing.Size(45, 13);
             this.lblVehicleSalePrice.TabIndex = 0;
             this.lblVehicleSalePrice.Text = "Vehicle:";
-            // 
-            // txtVehicleSalePrice
-            // 
-            this.txtVehicleSalePrice.Location = new System.Drawing.Point(147, 278);
-            this.txtVehicleSalePrice.Name = "txtVehicleSalePrice";
-            this.txtVehicleSalePrice.Size = new System.Drawing.Size(129, 20);
-            this.txtVehicleSalePrice.TabIndex = 1;
-            this.txtVehicleSalePrice.Text = "9999";
-            this.txtVehicleSalePrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // lblTradeInValue
             // 
@@ -510,6 +500,13 @@ namespace Franceschetti.Craig.RRCAGApp
             this.mnuFile.Size = new System.Drawing.Size(37, 20);
             this.mnuFile.Text = "&File";
             // 
+            // mnuFileClose
+            // 
+            this.mnuFileClose.Name = "mnuFileClose";
+            this.mnuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+            this.mnuFileClose.Size = new System.Drawing.Size(148, 22);
+            this.mnuFileClose.Text = "&Close";
+            // 
             // mnuView
             // 
             this.mnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -517,13 +514,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.mnuView.Name = "mnuView";
             this.mnuView.Size = new System.Drawing.Size(44, 20);
             this.mnuView.Text = "&View";
-            // 
-            // mnuFileClose
-            // 
-            this.mnuFileClose.Name = "mnuFileClose";
-            this.mnuFileClose.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-            this.mnuFileClose.Size = new System.Drawing.Size(180, 22);
-            this.mnuFileClose.Text = "&Close";
             // 
             // mnuViewVehicleInformation
             // 
@@ -548,7 +538,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.Controls.Add(this.grpAccessories);
             this.Controls.Add(this.txtTradeInValue);
             this.Controls.Add(this.lblTradeInValue);
-            this.Controls.Add(this.txtVehicleSalePrice);
             this.Controls.Add(this.lblVehicleSalePrice);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -577,7 +566,6 @@ namespace Franceschetti.Craig.RRCAGApp
         #endregion
 
         private System.Windows.Forms.Label lblVehicleSalePrice;
-        private System.Windows.Forms.TextBox txtVehicleSalePrice;
         private System.Windows.Forms.Label lblTradeInValue;
         private System.Windows.Forms.TextBox txtTradeInValue;
         private System.Windows.Forms.GroupBox grpAccessories;
