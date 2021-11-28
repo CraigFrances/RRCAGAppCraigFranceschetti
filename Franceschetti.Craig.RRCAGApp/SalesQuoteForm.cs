@@ -3,7 +3,7 @@
  * Program: Business Information Technology
  * Course: ADEV-2008 Programming 2
  * Created: 2021-11-9
- * Updated: 
+ * Updated: 2021-11-28
  */
 using System;
 using System.Collections.Generic;
@@ -25,13 +25,11 @@ namespace Franceschetti.Craig.RRCAGApp
     /// </summary>
     public partial class SalesQuoteForm : Form
     {
-        
         private SalesQuote salesQuote;
         private BindingList<Vehicle> vehicles;
         private BindingSource salesQuoteSource;
         private BindingSource vehicleSource;
         
-
         /// <summary>
         /// Initializes the SalesQuoteForm.
         /// </summary>
@@ -39,17 +37,13 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             InitializeComponent();
             this.Load += SalesQuoteForm_Load;
-            
-            salesQuoteSource = new BindingSource();
-            
 
-            vehicles = new BindingList<Vehicle>(DataRetriever.GetVehicles());
-            vehicleSource = new BindingSource();
-            
-            vehicleSource.DataSource = vehicles;
-            
-            salesQuoteSource.DataSource = typeof(SalesQuote);
+            this.salesQuoteSource = new BindingSource();
+            this.salesQuoteSource.DataSource = typeof(SalesQuote);
 
+            this.vehicles = new BindingList<Vehicle>(DataRetriever.GetVehicles());
+            this.vehicleSource = new BindingSource();
+            this.vehicleSource.DataSource = this.vehicles;
 
             BindControls();
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
@@ -66,36 +60,49 @@ namespace Franceschetti.Craig.RRCAGApp
             this.vehicleSource.CurrentChanged += vehicleSource_CurrentChanged;
             this.mnuFileClose.Click += MnuFileClose_Click;
             this.mnuViewVehicleInformation.Click += MnuViewVehicleInformation_Click;
-
         }
 
+        /// <summary>
+        /// handles the Click event for the view vehicle information menu selection.
+        /// </summary>
         private void MnuViewVehicleInformation_Click(object sender, EventArgs e)
         {
             VehicleInformationForm vehichleInformationForm = new VehicleInformationForm(vehicleSource);
             vehichleInformationForm.ShowDialog();
         }
 
+        /// <summary>
+        /// Handles the Click event for the close menu selection.
+        /// </summary>
         private void MnuFileClose_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Handles the CurrentChanged event for vehicle source.
+        /// </summary>
         private void vehicleSource_CurrentChanged(object sender, EventArgs e)
         {
             ClearVehicleSummaryAndFinanceOutput();
             this.mnuViewVehicleInformation.Enabled = true;
         }
 
+        /// <summary>
+        /// Handles the Format event for the options bind.
+        /// </summary>
         private void OptionsBind_Format(object sender, ConvertEventArgs e)
         {
-            e.Value = (((SalesQuote)salesQuoteSource.Current).AccessoryCost + ((SalesQuote)salesQuoteSource.Current).FinishCost);
+            e.Value = (((SalesQuote)this.salesQuoteSource.Current).AccessoryCost + ((SalesQuote)this.salesQuoteSource.Current).FinishCost);
         }
 
+        /// <summary>
+        /// UI binding controls.
+        /// </summary>
         private void BindControls()
         {
-
-            cboVehicle.DataSource = vehicleSource;
-            cboVehicle.DisplayMember = "StockID";
+            this.cboVehicle.DataSource = this.vehicleSource;
+            this.cboVehicle.DisplayMember = "StockID";
             VehicleSummaryBindedOutput();
         }
 
@@ -107,7 +114,6 @@ namespace Franceschetti.Craig.RRCAGApp
             SalesQuoteFormInitialState();
         }
 
-
         /// <summary>
         /// Handles the Click event of the calculate quote button.
         /// </summary>
@@ -116,7 +122,7 @@ namespace Franceschetti.Craig.RRCAGApp
             ResetErrorIcons();
             decimal tradeInValue;
 
-            if (cboVehicle.SelectedItem == null)
+            if (this.cboVehicle.SelectedItem == null)
             {
                 this.errorProvider.SetError(this.cboVehicle, "A vehicle must be selected.");
             }
@@ -147,15 +153,15 @@ namespace Franceschetti.Craig.RRCAGApp
 
                     tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
                     const decimal SalesTaxRate = .12m;
-                    salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, tradeInValue, SalesTaxRate);
+                    this.salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, tradeInValue, SalesTaxRate);
                     AccessoriesChosen();
                     ExteriorFinishChosen();
 
-                    salesQuoteSource.DataSource = salesQuote;
+                    this.salesQuoteSource.DataSource = this.salesQuote;
 
-                    if (tradeInValue > ((Vehicle)cboVehicle.SelectedItem).BasePrice)
+                    if (tradeInValue > ((Vehicle)this.cboVehicle.SelectedItem).BasePrice)
                     {
-                        errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
+                        this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
                         ClearVehicleSummaryAndFinanceOutput();
                     }
                     else
@@ -167,50 +173,51 @@ namespace Franceschetti.Craig.RRCAGApp
                 {
                     ClearVehicleSummaryAndFinanceOutput();
                 }
-
             }
         }
 
-
+        /// <summary>
+        /// Binds the UI controls to the salesQuote binding source.
+        /// </summary>
         private void VehicleSummaryBindedOutput()
         {
-            
-            Binding vehicleSalePriceBind = new Binding("Text", salesQuoteSource, "VehicleSalePrice");
+            Binding vehicleSalePriceBind = new Binding("Text", this.salesQuoteSource, "VehicleSalePrice");
             vehicleSalePriceBind.FormattingEnabled = true;
             vehicleSalePriceBind.FormatString = "C";
-            lblVehicleSalePriceOutput.DataBindings.Add(vehicleSalePriceBind);
+            this.lblVehicleSalePriceOutput.DataBindings.Add(vehicleSalePriceBind);
 
-            Binding optionsBind = new Binding("Text", salesQuoteSource, "FinishCost");
+            Binding optionsBind = new Binding("Text", this.salesQuoteSource, "FinishCost");
             optionsBind.Format += OptionsBind_Format;
-            lblOptionsOutput.DataBindings.Add(optionsBind);
+            this.lblOptionsOutput.DataBindings.Add(optionsBind);
 
-
-            Binding subTotal = new Binding("Text", salesQuoteSource, "SubTotal");
+            Binding subTotal = new Binding("Text", this.salesQuoteSource, "SubTotal");
             subTotal.FormattingEnabled = true;
             subTotal.FormatString = "C";
-            lblSubTotalOutput.DataBindings.Add(subTotal);
+            this.lblSubTotalOutput.DataBindings.Add(subTotal);
 
-            Binding salesTax = new Binding("Text", salesQuoteSource, "SalesTax");
+            Binding salesTax = new Binding("Text", this.salesQuoteSource, "SalesTax");
             salesTax.FormattingEnabled = true;
             salesTax.FormatString = "N";
-            lblSalesTaxOutput.DataBindings.Add(salesTax);
+            this.lblSalesTaxOutput.DataBindings.Add(salesTax);
 
-            Binding total = new Binding("Text", salesQuoteSource, "Total");
+            Binding total = new Binding("Text", this.salesQuoteSource, "Total");
             total.FormattingEnabled = true;
             total.FormatString = "C";
-            lblTotalOutput.DataBindings.Add(total);
+            this.lblTotalOutput.DataBindings.Add(total);
 
-            Binding tradeInAmount = new Binding("Text", salesQuoteSource, "TradeInAmount");
+            Binding tradeInAmount = new Binding("Text", this.salesQuoteSource, "TradeInAmount");
             tradeInAmount.Format += TradeInAmount_Format;
-            lblTradeInOutput.DataBindings.Add(tradeInAmount);
+            this.lblTradeInOutput.DataBindings.Add(tradeInAmount);
 
-
-            Binding amountDue = new Binding("Text", salesQuoteSource, "AmountDue");
+            Binding amountDue = new Binding("Text", this.salesQuoteSource, "AmountDue");
             amountDue.FormattingEnabled = true;
             amountDue.FormatString = "C";
-            lblAmountDueOutput.DataBindings.Add(amountDue);
+            this.lblAmountDueOutput.DataBindings.Add(amountDue);
         }
 
+        /// <summary>
+        /// Handles the Format event for the trade in amount bind.
+        /// </summary>
         private void TradeInAmount_Format(object sender, ConvertEventArgs e)
         {
             e.Value = Decimal.Parse(e.Value.ToString()) * -1;
@@ -233,7 +240,7 @@ namespace Franceschetti.Craig.RRCAGApp
             {
                 AccessoriesChosen();
                 FinancialOutput();
-                salesQuoteSource.ResetBindings(false);
+                this.salesQuoteSource.ResetBindings(false);
             }
         }
 
@@ -246,7 +253,7 @@ namespace Franceschetti.Craig.RRCAGApp
             {
                 ExteriorFinishChosen();
                 FinancialOutput();
-                salesQuoteSource.ResetBindings(false);
+                this.salesQuoteSource.ResetBindings(false);
             }
         }
 
@@ -284,7 +291,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void SalesQuoteFormInitialState()
         {
-            this.cboVehicle.Focus();
+            this.txtTradeInValue.Focus();
             this.txtTradeInValue.Text = "0";
             this.nudNumberOfYears.Value = 1m;
             this.nudAnnualInterestRate.Value = 5m;
@@ -298,15 +305,6 @@ namespace Franceschetti.Craig.RRCAGApp
             this.mnuViewVehicleInformation.Enabled = false;
             this.errorProvider.SetIconPadding(this.cboVehicle, 3);
             this.errorProvider.SetIconPadding(this.txtTradeInValue, 3);
-            ClearVehicleSummaryAndFinanceOutput();
-            ResetErrorIcons();
-        }
-
-        /// <summary>
-        /// Clears the vehicle summary and finance output section of the form.
-        /// </summary>
-        private void ClearVehicleSummaryAndFinanceOutput()
-        {
             this.lblVehicleSalePriceOutput.Text = string.Empty;
             this.lblOptionsOutput.Text = string.Empty;
             this.lblSubTotalOutput.Text = string.Empty;
@@ -315,7 +313,16 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblTradeInOutput.Text = string.Empty;
             this.lblAmountDueOutput.Text = string.Empty;
             this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
-            this.salesQuote = null;
+            ResetErrorIcons();
+        }
+
+        /// <summary>
+        /// Clears the vehicle summary and finance output section of the form.
+        /// </summary>
+        private void ClearVehicleSummaryAndFinanceOutput()
+        {
+            this.salesQuoteSource.List.Clear();
+            this.lblMonthlyPaymentFinanceOutput.Text = string.Empty;
         }
 
         /// <summary>
