@@ -31,6 +31,7 @@ namespace Franceschetti.Craig.RRCAGApp
         BindingSource salesQuoteSource;
         BindingSource vehicleSource;
         Binding optionsBind;
+        private decimal tradeInValue;
 
         /// <summary>
         /// Initializes the SalesQuoteForm.
@@ -50,7 +51,6 @@ namespace Franceschetti.Craig.RRCAGApp
 
             BindControls();
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
-            
             this.txtVehicleSalePrice.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.chkStereoSystem.Click += ChkAccessories_Click;
@@ -63,14 +63,26 @@ namespace Franceschetti.Craig.RRCAGApp
             this.nudAnnualInterestRate.ValueChanged += NudFinancial_ValueChanged;
             this.btnReset.Click += BtnReset_Click;
             this.vehicleSource.CurrentChanged += vehicleSource_CurrentChanged;
-           
-            
+            this.mnuFileClose.Click += MnuFileClose_Click;
+            this.mnuViewVehicleInformation.Click += MnuViewVehicleInformation_Click;
 
+        }
+
+        private void MnuViewVehicleInformation_Click(object sender, EventArgs e)
+        {
+            VehicleInformationForm vehichleInformationForm = new VehicleInformationForm(vehicleSource);
+            vehichleInformationForm.ShowDialog();
+        }
+
+        private void MnuFileClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void vehicleSource_CurrentChanged(object sender, EventArgs e)
         {
             ClearVehicleSummaryAndFinanceOutput();
+            this.mnuViewVehicleInformation.Enabled = true;
         }
 
         private void OptionsBind_Format(object sender, ConvertEventArgs e)
@@ -82,7 +94,6 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             cboVehicle.DataSource = vehicleSource;
             cboVehicle.DisplayMember = "StockID";
-            cboVehicle.ValueMember = "BasePrice";
         }
 
         /// <summary>
@@ -91,7 +102,6 @@ namespace Franceschetti.Craig.RRCAGApp
         private void SalesQuoteForm_Load(object sender, EventArgs e)
         {
             SalesQuoteFormInitialState();
-            
         }
 
 
@@ -100,91 +110,8 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void BtnCalculateQuote_Click(object sender, EventArgs e)
         {
-
-
-
-
-
-            decimal vehicleSalePrice;
-            decimal tradeInValue;
-
-            try
-            {
-                vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
-
-                if (vehicleSalePrice <= 0m)
-                {
-                    this.errorProvider.SetError(this.txtVehicleSalePrice, "Vehicle price cannot be less than or equal to 0.");
-                }
-            }
-            catch (FormatException)
-            {
-                if (this.txtVehicleSalePrice.Text.Equals(string.Empty))
-                {
-                    this.errorProvider.SetError(this.txtVehicleSalePrice, "Vehicle price is a required field.");
-                }
-                else
-                {
-                    this.errorProvider.SetError(this.txtVehicleSalePrice, "Vehicle price cannot contain letters or special characters.");
-                }
-            }
-
-            try
-            {
-                tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
-
-                if (tradeInValue < 0)
-                {
-                    this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot be less than 0.");
-                }
-            }
-            catch (FormatException)
-            {
-                if (this.txtTradeInValue.Text.Equals(string.Empty))
-                {
-                    this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value is a required field.");
-                }
-                else
-                {
-                    this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot contain letters or special characters.");
-                }
-            }
-
-            if (this.errorProvider.GetError(txtVehicleSalePrice).Equals(string.Empty) && this.errorProvider.GetError(txtTradeInValue).Equals(string.Empty))
-            {
-                vehicleSalePrice = Decimal.Parse(this.txtVehicleSalePrice.Text);
-                tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
-
-                if (tradeInValue > vehicleSalePrice)
-                {
-                    errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
-                    ClearVehicleSummaryAndFinanceOutput();
-                }
-                else
-                {
-                    const decimal SalesTaxRate = .12m;
-                    salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
-                    AccessoriesChosen();
-                    ExteriorFinishChosen();
-                    VehicleSummaryOutput();
-                    FinancialOutput();
-                }
-            }
-            else
-            {
-                ClearVehicleSummaryAndFinanceOutput();
-            }
-
-
             ResetErrorIcons();
-            lblVehicleSalePriceOutput.DataBindings.Clear();
-            lblSubTotalOutput.DataBindings.Clear();
-            lblOptionsOutput.DataBindings.Clear();
-            lblSalesTaxOutput.DataBindings.Clear();
-            lblTotalOutput.DataBindings.Clear();
-            lblTradeInOutput.DataBindings.Clear();
-            lblAmountDueOutput.DataBindings.Clear();
-
+            ClearBinds();
 
             if (!(cboVehicle.SelectedItem != null))
             {
@@ -192,41 +119,107 @@ namespace Franceschetti.Craig.RRCAGApp
             }
             else
             {
-                salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, 0, .12m);
-                salesQuoteSource.DataSource = salesQuote;
-                Binding vehicleSalePriceBind = new Binding("Text", vehicleSource, "BasePrice");
-                vehicleSalePriceBind.FormattingEnabled = true;
-                vehicleSalePriceBind.FormatString = "C";
-                lblVehicleSalePriceOutput.DataBindings.Add(vehicleSalePriceBind);
+                try
+                {
+                    tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
 
-                optionsBind = new Binding("Text", salesQuoteSource, "FinishCost");
-                lblOptionsOutput.DataBindings.Add(optionsBind);
-                this.optionsBind.Format += OptionsBind_Format;
+                    if (tradeInValue < 0)
+                    {
+                        this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot be less than 0.");
+                    }
+                }
+                catch (FormatException)
+                {
+                    if (this.txtTradeInValue.Text.Equals(string.Empty))
+                    {
+                        this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value is a required field.");
+                    }
+                    else
+                    {
+                        this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot contain letters or special characters.");
+                    }
+                }
+                if (this.errorProvider.GetError(txtTradeInValue).Equals(string.Empty))
+                {
 
-                Binding subTotal = new Binding("Text", salesQuoteSource, "SubTotal");
-                subTotal.FormattingEnabled = true;
-                subTotal.FormatString = "C";
-                lblSubTotalOutput.DataBindings.Add(subTotal);
+                    
 
-                Binding salesTax = new Binding("Text", salesQuoteSource, "SalesTax");
-                salesTax.FormattingEnabled = true;
-                salesTax.FormatString = "N";
-                lblSalesTaxOutput.DataBindings.Add(salesTax);
+                    tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
+                    const decimal SalesTaxRate = .12m;
+                    salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, tradeInValue, SalesTaxRate);
+                   
+                    salesQuoteSource.DataSource = salesQuote;
 
-                Binding total = new Binding("Text", salesQuoteSource, "Total");
-                total.FormattingEnabled = true;
-                total.FormatString = "C";
-                lblTotalOutput.DataBindings.Add(total);
+                    AccessoriesChosen();
+                    ExteriorFinishChosen();
+                    VehicleSummaryBindedOutput();
 
-                Binding tradeInAmount = new Binding("Text", salesQuoteSource, "TradeInAmount");
-                lblTradeInOutput.DataBindings.Add(tradeInAmount);
-                tradeInAmount.Format += TradeInAmount_Format;
+                    if (tradeInValue > ((Vehicle)cboVehicle.SelectedItem).BasePrice)
+                    {
+                        errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
+                        ClearVehicleSummaryAndFinanceOutput();
+                    }
+                    else
+                    {
+                        FinancialOutput();
+                    }
+                }
+                else
+                {
+                    ClearVehicleSummaryAndFinanceOutput();
+                }
 
-                Binding amountDue = new Binding("Text", salesQuoteSource, "AmountDue");
-                amountDue.FormattingEnabled = true;
-                amountDue.FormatString = "C";
-                lblAmountDueOutput.DataBindings.Add(amountDue);
             }
+        }
+
+        private void ClearBinds()
+        {
+            lblVehicleSalePriceOutput.DataBindings.Clear();
+            lblSubTotalOutput.DataBindings.Clear();
+            lblOptionsOutput.DataBindings.Clear();
+            lblSalesTaxOutput.DataBindings.Clear();
+            lblTotalOutput.DataBindings.Clear();
+            lblTradeInOutput.DataBindings.Clear();
+            lblAmountDueOutput.DataBindings.Clear();
+        }
+
+        private void VehicleSummaryBindedOutput()
+        {
+            ClearBinds();
+            Binding vehicleSalePriceBind = new Binding("Text", salesQuoteSource, "VehicleSalePrice");
+            vehicleSalePriceBind.FormattingEnabled = true;
+            vehicleSalePriceBind.FormatString = "C";
+            lblVehicleSalePriceOutput.DataBindings.Add(vehicleSalePriceBind);
+
+            this.optionsBind = new Binding("Text", salesQuoteSource, "FinishCost");
+            this.optionsBind.Format += OptionsBind_Format;
+            lblOptionsOutput.DataBindings.Add(this.optionsBind);
+
+
+            Binding subTotal = new Binding("Text", salesQuoteSource, "SubTotal");
+            subTotal.FormattingEnabled = true;
+            subTotal.FormatString = "C";
+            lblSubTotalOutput.DataBindings.Add(subTotal);
+
+            Binding salesTax = new Binding("Text", salesQuoteSource, "SalesTax");
+            salesTax.FormattingEnabled = true;
+            salesTax.FormatString = "N";
+            lblSalesTaxOutput.DataBindings.Add(salesTax);
+
+            Binding total = new Binding("Text", salesQuoteSource, "Total");
+            total.FormattingEnabled = true;
+            total.FormatString = "C";
+            lblTotalOutput.DataBindings.Add(total);
+
+            Binding tradeInAmount = new Binding("Text", salesQuoteSource, "TradeInAmount");
+            tradeInAmount.Format += TradeInAmount_Format;
+            lblTradeInOutput.DataBindings.Add(tradeInAmount);
+
+
+            Binding amountDue = new Binding("Text", salesQuoteSource, "AmountDue");
+            amountDue.FormattingEnabled = true;
+            amountDue.FormatString = "C";
+            lblAmountDueOutput.DataBindings.Add(amountDue);
         }
 
         private void TradeInAmount_Format(object sender, ConvertEventArgs e)
@@ -250,7 +243,8 @@ namespace Franceschetti.Craig.RRCAGApp
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
                 AccessoriesChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+                VehicleSummaryBindedOutput();
+                FinancialOutput();
             }
         }
 
@@ -262,7 +256,8 @@ namespace Franceschetti.Craig.RRCAGApp
             if (!lblVehicleSalePriceOutput.Text.Equals(string.Empty))
             {
                 ExteriorFinishChosen();
-                VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn();
+                VehicleSummaryBindedOutput();
+                FinancialOutput();
             }
         }
 
@@ -400,40 +395,6 @@ namespace Franceschetti.Craig.RRCAGApp
             {
                 salesQuote.AccessoriesChosen = Accessories.None;
             }
-        }
-
-        /// <summary>
-        /// Sets the Summary state. 
-        /// </summary>
-        private void VehicleSummaryOutput()
-        {
-            this.lblVehicleSalePriceOutput.Text = salesQuote.VehicleSalePrice.ToString("C");
-            decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
-            lblOptionsOutput.Text = options.ToString("N");
-
-            lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
-            lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
-            lblTotalOutput.Text = salesQuote.Total.ToString("C");
-
-            decimal tradeInAsNegative = -1m * salesQuote.TradeInAmount;
-            lblTradeInOutput.Text = tradeInAsNegative.ToString("N");
-            lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
-        }
-
-        /// <summary>
-        /// Sets the vehicle summary output, excluding trade in value.
-        /// </summary>
-        private void VehicleSummaryOutputAndFinanceSummaryOutputExcludingTradeIn()
-        {
-            decimal options = salesQuote.AccessoryCost + salesQuote.FinishCost;
-            lblOptionsOutput.Text = options.ToString("N");
-
-            lblSubTotalOutput.Text = salesQuote.SubTotal.ToString("C");
-            lblSalesTaxOutput.Text = salesQuote.SalesTax.ToString("N");
-            lblTotalOutput.Text = salesQuote.Total.ToString("C");
-            lblAmountDueOutput.Text = salesQuote.AmountDue.ToString("C");
-
-            FinancialOutput();
         }
 
         /// <summary>

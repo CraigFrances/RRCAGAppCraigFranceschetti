@@ -40,6 +40,7 @@ namespace Franceschetti.Craig.RRCAGApp
 
             // add taxes
             Binding taxes = new Binding("Text", this.carWashSource, "ProvincialSalesTaxCharged");
+            taxes.Format += Taxes_Format;
             this.lblTaxesOutput.DataBindings.Add(taxes);
 
             Binding total = new Binding("Text", this.carWashSource, "Total");
@@ -47,7 +48,7 @@ namespace Franceschetti.Craig.RRCAGApp
             total.FormatString = "C";
             this.lblTotalOutput.DataBindings.Add(total);
 
-            taxes.Format += Taxes_Format;
+           
         }
 
         private void Taxes_Format(object sender, ConvertEventArgs e)
