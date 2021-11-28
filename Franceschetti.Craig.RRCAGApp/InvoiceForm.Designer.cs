@@ -134,7 +134,7 @@ namespace Franceschetti.Craig.RRCAGApp
         private System.Windows.Forms.Label lblCityProvincePostal;
         private System.Windows.Forms.Label lblPhone;
         private System.Windows.Forms.Label lblDate;
-        private System.Windows.Forms.Label lblDateFormatted;
         protected System.Windows.Forms.Label lblInvoiceTitle;
+        protected System.Windows.Forms.Label lblDateFormatted;
     }
 }

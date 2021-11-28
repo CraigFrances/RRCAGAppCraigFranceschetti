@@ -26,6 +26,7 @@ namespace Franceschetti.Craig.RRCAGApp
         CarWashInvoice carWashInvoice;
         BindingList<CarWashServices> packages;
         BindingList<CarWashServices> fragrances;
+        FileStream fragrancesStream;
 
 
 
@@ -137,9 +138,10 @@ namespace Franceschetti.Craig.RRCAGApp
         private void ObtainFragranceDescriptionInput()
         {
             
-            FileStream fragrancesStream;
-            StreamReader reader;
             fragrancesStream = new FileStream("fragrances.txt", FileMode.Open, FileAccess.Read);
+            StreamReader reader;
+            
+            fragrancesStream.Flush();
             reader = new StreamReader(fragrancesStream);
 
             fragrances = new BindingList<CarWashServices>();
@@ -148,12 +150,12 @@ namespace Franceschetti.Craig.RRCAGApp
 
             while (reader.Peek() != -1)
             {
-                string stringManipulation = reader.ReadLine();
-                string fragranceDescription = stringManipulation.Substring(0, stringManipulation.IndexOf('$'));
-                string fragrancePrice = stringManipulation.Substring(stringManipulation.IndexOf('$') + 1);
-                decimal fragranceDecimal = Decimal.Parse(fragrancePrice.TrimEnd(','));
-                fragrances.Add(new CarWashServices (fragranceDescription, fragranceDecimal));
+                string splitter = reader.ReadLine();
+                string[] fragranceData = splitter.Split(',');
+                fragrances.Add(new CarWashServices(fragranceData[0], Decimal.Parse(fragranceData[1])));
             }
+
+            fragrancesStream.Close();
             
         }
 

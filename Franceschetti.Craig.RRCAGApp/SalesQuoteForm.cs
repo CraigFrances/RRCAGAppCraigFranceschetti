@@ -116,7 +116,7 @@ namespace Franceschetti.Craig.RRCAGApp
             ResetErrorIcons();
             decimal tradeInValue;
 
-            if (!(cboVehicle.SelectedItem != null))
+            if (cboVehicle.SelectedItem == null)
             {
                 this.errorProvider.SetError(this.cboVehicle, "A vehicle must be selected.");
             }

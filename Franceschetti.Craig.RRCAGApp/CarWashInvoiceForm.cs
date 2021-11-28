@@ -59,7 +59,7 @@ namespace Franceschetti.Craig.RRCAGApp
         private void CarWashInvoiceForm_Load(object sender, EventArgs e)
         {
             lblInvoiceTitle.Text = "Car Wash Invoice";
-            
+            lblDateFormatted.Text = DateTime.Now.ToString("MM/dd/yyyy");
         }
     }
 }

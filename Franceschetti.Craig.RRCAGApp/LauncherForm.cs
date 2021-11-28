@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
@@ -22,6 +23,7 @@ namespace Franceschetti.Craig.RRCAGApp
     /// </summary>
     public partial class LauncherForm : Form
     {
+        FileStream fragranceStream;
         /// <summary>
         /// Initializes the launcher.
         /// </summary>
@@ -36,8 +38,22 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void MnuFileOpenCarWash_Click(object sender, EventArgs e)
         {
-            CarWashEntryForm carWashEntryForm = new CarWashEntryForm();
-            carWashEntryForm.ShowDialog();
+            
+            try
+            {
+                fragranceStream = new FileStream("fragrances.txt", FileMode.Open, FileAccess.Read);
+                CarWashEntryForm carWashEntryForm = new CarWashEntryForm();
+                carWashEntryForm.ShowDialog();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Fragrances data file not found.", "Data File Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("An error occurred while reading the data file.", "Data File Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            
         }
 
         /// <summary>
