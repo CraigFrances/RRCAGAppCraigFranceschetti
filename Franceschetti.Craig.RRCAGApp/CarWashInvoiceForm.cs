@@ -23,12 +23,12 @@ namespace Franceschetti.Craig.RRCAGApp
             this.packageSource = package;
             this.fragranceSource = fragrance;
             this.carWashSource = carwash;
-            Binding packagePrice = new Binding("Text", this.packageSource, "PackagePrice");
+            Binding packagePrice = new Binding("Text", this.packageSource, "Price");
             packagePrice.FormattingEnabled = true;
             packagePrice.FormatString = "C";
             this.lblPackagePriceOutput.DataBindings.Add(packagePrice);
 
-            Binding fragrancePrice = new Binding("Text", this.fragranceSource, "FragrancePrice");
+            Binding fragrancePrice = new Binding("Text", this.fragranceSource, "Price");
             fragrancePrice.FormattingEnabled = true;
             fragrancePrice.FormatString = "N";
             this.lblFragrancePriceOutput.DataBindings.Add(fragrancePrice);

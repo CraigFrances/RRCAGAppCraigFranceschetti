@@ -24,20 +24,31 @@ namespace Franceschetti.Craig.RRCAGApp
         List<string> interiorMasterList;
         List<string> exteriorMasterList;
         CarWashInvoice carWashInvoice;
-        
+        BindingList<CarWashServices> packages;
+        BindingList<CarWashServices> fragrances;
+
 
 
         public CarWashEntryForm()
         {
             InitializeComponent();
-
-            ObtainFragranceDescriptionInput();
-            PackageInput();
-            InteriorAndExteriorFinish();
+            carWashSource = new BindingSource();
             
 
+
+            
+            ObtainFragranceDescriptionInput();
+            PackageInput();
+
+            carWashInvoice = new CarWashInvoice(.07m, .05m, ((CarWashServices)packageSource.Current).Price, ((CarWashServices)fragranceSource.Current).Price);
+            this.carWashSource.DataSource = carWashInvoice;
+
+            InteriorAndExteriorFinish();
+           
             BindingControls();
-            CarWashBind();
+            
+
+
 
             this.fragranceSource.PositionChanged += PackageSourceOrFragranceSource_PositionChanged;
             this.packageSource.PositionChanged += PackageSourceOrFragranceSource_PositionChanged;
@@ -89,13 +100,10 @@ namespace Franceschetti.Craig.RRCAGApp
 
         private void PackageSourceOrFragranceSource_PositionChanged(object sender, EventArgs e)
         {
-            lblSubtotalOutput.DataBindings.Clear();
-            lblPSTOutput.DataBindings.Clear();
-            lblGSTOutput.DataBindings.Clear();
-            lblTotalOutput.DataBindings.Clear();
             interiorServices.Clear();
             exteriorServices.Clear();
-            string fragranceSelected = $"Fragrance - {((Fragrance)cboFragrance.SelectedItem).FragranceDescription}";
+            carWashSource.List.Clear();
+            string fragranceSelected = $"Fragrance - {((CarWashServices)cboFragrance.SelectedItem).Description}";
 
 
             for (int i = 0; i <= packageSource.Position; i++)
@@ -104,15 +112,61 @@ namespace Franceschetti.Craig.RRCAGApp
                 exteriorServices.Add(exteriorMasterList[i]);
             }
             interiorServices[0] = fragranceSelected;
-            CarWashBind();
-
+            carWashInvoice = new CarWashInvoice(.07m, .05m, ((CarWashServices)cboPackage.SelectedItem).Price, ((CarWashServices)cboFragrance.SelectedItem).Price);
+            this.carWashSource.DataSource = carWashInvoice;
         }
 
-        private void CarWashBind()
+        private void PackageInput()
         {
-            carWashSource = new BindingSource();
-            carWashInvoice = new CarWashInvoice(.07m, .05m, ((Package)cboPackage.SelectedItem).PackagePrice, ((Fragrance)cboFragrance.SelectedItem).FragrancePrice);
-            this.carWashSource.DataSource = carWashInvoice;
+            CarWashServices standard = new CarWashServices("Standard", 7.50m);
+            CarWashServices deluxe = new CarWashServices("Deluxe", 15.00m);
+            CarWashServices executive = new CarWashServices("Executive", 35.00m);
+            CarWashServices luxury = new CarWashServices("Luxury", 55.00m);
+
+            
+            this.packages = new BindingList<CarWashServices>();
+            this.packageSource = new BindingSource();
+            this.packageSource.DataSource = this.packages;
+
+            this.packages.Add(standard);
+            this.packages.Add(deluxe);
+            this.packages.Add(executive);
+            this.packages.Add(luxury); 
+        }
+
+        private void ObtainFragranceDescriptionInput()
+        {
+            
+            FileStream fragrancesStream;
+            StreamReader reader;
+            fragrancesStream = new FileStream("fragrances.txt", FileMode.Open, FileAccess.Read);
+            reader = new StreamReader(fragrancesStream);
+
+            fragrances = new BindingList<CarWashServices>();
+            this.fragranceSource = new BindingSource();
+            this.fragranceSource.DataSource = fragrances;
+
+            while (reader.Peek() != -1)
+            {
+                string stringManipulation = reader.ReadLine();
+                string fragranceDescription = stringManipulation.Substring(0, stringManipulation.IndexOf('$'));
+                string fragrancePrice = stringManipulation.Substring(stringManipulation.IndexOf('$') + 1);
+                decimal fragranceDecimal = Decimal.Parse(fragrancePrice.TrimEnd(','));
+                fragrances.Add(new CarWashServices (fragranceDescription, fragranceDecimal));
+            }
+            
+        }
+
+        private void BindingControls()
+        {
+            cboFragrance.DataSource = this.fragranceSource;
+            cboFragrance.DisplayMember = "Description";
+            cboFragrance.ValueMember = "Price";
+            cboPackage.DataSource = this.packageSource;
+            cboPackage.DisplayMember = "Description";
+            cboPackage.ValueMember = "Price";
+            lstInterior.DataSource = this.interiorSource;
+            lstExterior.DataSource = this.exteriorSource;
 
             Binding subTotal = new Binding("Text", carWashSource, "SubTotal");
             subTotal.FormattingEnabled = true;
@@ -133,60 +187,7 @@ namespace Franceschetti.Craig.RRCAGApp
             total.FormattingEnabled = true;
             total.FormatString = "C";
             lblTotalOutput.DataBindings.Add(total);
-        }
 
-        private void PackageInput()
-        {
-            Package standard = new Package("Standard", 7.50m);
-            Package deluxe = new Package("Deluxe", 15.00m);
-            Package executive = new Package("Executive", 35.00m);
-            Package luxury = new Package("Luxury", 55.00m);
-
-            BindingList<Package> packageList;
-            packageList = new BindingList<Package>();
-            this.packageSource = new BindingSource();
-            this.packageSource.DataSource = packageList;
-
-            packageList.Add(standard);
-            packageList.Add(deluxe);
-            packageList.Add(executive);
-            packageList.Add(luxury);
-        }
-
-        private void ObtainFragranceDescriptionInput()
-        {
-            BindingList<Fragrance> fragranceList;
-            FileStream fragrancesStream;
-            StreamReader reader;
-            fragrancesStream = new FileStream("fragrances.txt", FileMode.Open, FileAccess.Read);
-            reader = new StreamReader(fragrancesStream);
-
-            fragranceList = new BindingList<Fragrance>();
-            this.fragranceSource = new BindingSource();
-            this.fragranceSource.DataSource = fragranceList;
-
-            while (reader.Peek() != -1)
-            {
-                string stringManipulation = reader.ReadLine();
-                string fragranceDescription = stringManipulation.Substring(0, stringManipulation.IndexOf('$'));
-                string fragrancePrice = stringManipulation.Substring(stringManipulation.IndexOf('$') + 1);
-                decimal fragranceDecimal = Decimal.Parse(fragrancePrice.TrimEnd(','));
-                fragranceList.Add(new Fragrance (fragranceDescription, fragranceDecimal));
-            }
-            
-        }
-
-        private void BindingControls()
-        {
-            cboFragrance.DataSource = this.fragranceSource;
-            cboFragrance.DisplayMember = "FragranceDescription";
-            cboFragrance.ValueMember = "FragrancePrice";
-            cboPackage.DataSource = this.packageSource;
-            cboPackage.DisplayMember = "PackageDescription";
-            cboPackage.ValueMember = "PackagePrice";
-            lstInterior.DataSource = this.interiorSource;
-            lstExterior.DataSource = this.exteriorSource;
-           
         }
     }
 }

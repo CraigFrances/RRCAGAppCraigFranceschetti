@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
-    class Package
+    class CarWashServices
     {
-        public string PackageDescription
+        public string Description
         {
             get;
         }
 
-        public decimal PackagePrice
+        public decimal Price
         {
             get;
         }
 
-        public Package(string description, decimal price)
+        public CarWashServices(string description, decimal price)
         {
-            this.PackageDescription = description;
-            this.PackagePrice = price;
+            this.Description = description;
+            this.Price = price;
         }
     }
 }
