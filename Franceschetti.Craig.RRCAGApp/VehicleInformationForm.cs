@@ -47,6 +47,16 @@ namespace Franceschetti.Craig.RRCAGApp
             this.lblBasePriceOutput.DataBindings.Add(basePrice);
 
             this.Text = vehicleSource.Current.ToString();
+
+            btnClose.Click += BtnClose_Click;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the close button.
+        /// </summary>
+        private void BtnClose_Click(object sender, System.EventArgs e)
+        {
+            this.Close();
         }
 
         /// <summary>

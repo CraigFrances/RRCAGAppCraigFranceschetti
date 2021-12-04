@@ -220,7 +220,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void TradeInAmount_Format(object sender, ConvertEventArgs e)
         {
-            e.Value = Decimal.Parse(e.Value.ToString()) * -1;
+            e.Value = $"-{((Decimal)e.Value).ToString("N")}";
         }
 
         /// <summary>
