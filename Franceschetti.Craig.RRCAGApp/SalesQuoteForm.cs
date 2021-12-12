@@ -3,12 +3,13 @@
  * Program: Business Information Technology
  * Course: ADEV-2008 Programming 2
  * Created: 2021-11-9
- * Updated: 2021-11-28
+ * Updated: 2021-12-12
  */
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -25,8 +26,8 @@ namespace Franceschetti.Craig.RRCAGApp
     /// </summary>
     public partial class SalesQuoteForm : Form
     {
+        private OleDbConnection connection;
         private SalesQuote salesQuote;
-        private BindingList<Vehicle> vehicles;
         private BindingSource salesQuoteSource;
         private BindingSource vehicleSource;
         
@@ -40,12 +41,26 @@ namespace Franceschetti.Craig.RRCAGApp
 
             this.salesQuoteSource = new BindingSource();
             this.salesQuoteSource.DataSource = typeof(SalesQuote);
+            this.connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source = AMDatabase.mdb");
+            this.connection.Open();
 
-            this.vehicles = new BindingList<Vehicle>(DataRetriever.GetVehicles());
+            OleDbCommand selectStockNumberCommand = new OleDbCommand("SELECT * FROM VehicleStock WHERE SoldBy = 0", this.connection);
+            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(selectStockNumberCommand);
+            DataSet dataSet = new DataSet();
+            OleDbCommandBuilder commandBuilder = new OleDbCommandBuilder(dataAdapter);
+
+            commandBuilder.ConflictOption = ConflictOption.OverwriteChanges;
+
+            dataAdapter.Fill(dataSet, "VehicleStock");
+
+            if (dataSet.Tables["VehicleStock"].Rows.Count == 0)
+            {
+                throw new NoRowsException();
+            }
+
             this.vehicleSource = new BindingSource();
-            this.vehicleSource.DataSource = this.vehicles;
+            this.vehicleSource.DataSource = dataSet.Tables["VehicleStock"];
 
-            BindControls();
             this.btnCalculateQuote.Click += BtnCalculateQuote_Click;
             this.txtTradeInValue.TextChanged += TxtVehicleSalePriceOrTxtTradeInValue_TextChanged;
             this.chkStereoSystem.Click += ChkAccessories_Click;
@@ -57,13 +72,14 @@ namespace Franceschetti.Craig.RRCAGApp
             this.nudNumberOfYears.ValueChanged += NudFinancial_ValueChanged;
             this.nudAnnualInterestRate.ValueChanged += NudFinancial_ValueChanged;
             this.btnReset.Click += BtnReset_Click;
-            this.vehicleSource.CurrentChanged += vehicleSource_CurrentChanged;
+            this.cboVehicle.SelectedIndexChanged += CboVehicle_SelectedIndexChanged;
             this.mnuFileClose.Click += MnuFileClose_Click;
             this.mnuViewVehicleInformation.Click += MnuViewVehicleInformation_Click;
+            BindControls();
         }
 
         /// <summary>
-        /// handles the Click event for the view vehicle information menu selection.
+        /// Handles the Click event for the view vehicle information menu selection.
         /// </summary>
         private void MnuViewVehicleInformation_Click(object sender, EventArgs e)
         {
@@ -80,9 +96,9 @@ namespace Franceschetti.Craig.RRCAGApp
         }
 
         /// <summary>
-        /// Handles the CurrentChanged event for vehicle source.
+        /// Handles the SelectedIndexChanged event for vehicle source.
         /// </summary>
-        private void vehicleSource_CurrentChanged(object sender, EventArgs e)
+        private void CboVehicle_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClearVehicleSummaryAndFinanceOutput();
             this.mnuViewVehicleInformation.Enabled = true;
@@ -93,7 +109,7 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void OptionsBind_Format(object sender, ConvertEventArgs e)
         {
-            e.Value = (((SalesQuote)this.salesQuoteSource.Current).AccessoryCost + ((SalesQuote)this.salesQuoteSource.Current).FinishCost);
+            e.Value = ((SalesQuote)this.salesQuoteSource.Current).AccessoryCost + ((SalesQuote)this.salesQuoteSource.Current).FinishCost;
         }
 
         /// <summary>
@@ -102,7 +118,8 @@ namespace Franceschetti.Craig.RRCAGApp
         private void BindControls()
         {
             this.cboVehicle.DataSource = this.vehicleSource;
-            this.cboVehicle.DisplayMember = "StockID";
+            this.cboVehicle.DisplayMember = "StockNumber";
+            this.cboVehicle.ValueMember = "BasePrice";
             VehicleSummaryBindedOutput();
         }
 
@@ -153,13 +170,14 @@ namespace Franceschetti.Craig.RRCAGApp
 
                     tradeInValue = Decimal.Parse(this.txtTradeInValue.Text);
                     const decimal SalesTaxRate = .12m;
-                    this.salesQuote = new SalesQuote(((Vehicle)cboVehicle.SelectedItem).BasePrice, tradeInValue, SalesTaxRate);
+                    decimal vehicleSalePrice = decimal.Parse(this.cboVehicle.SelectedValue.ToString());
+                    this.salesQuote = new SalesQuote(vehicleSalePrice, tradeInValue, SalesTaxRate);
                     AccessoriesChosen();
                     ExteriorFinishChosen();
 
                     this.salesQuoteSource.DataSource = this.salesQuote;
 
-                    if (tradeInValue > ((Vehicle)this.cboVehicle.SelectedItem).BasePrice)
+                    if (tradeInValue > vehicleSalePrice)
                     {
                         this.errorProvider.SetError(this.txtTradeInValue, "Trade-in value cannot exceed the vehicle sale price.");
                         ClearVehicleSummaryAndFinanceOutput();

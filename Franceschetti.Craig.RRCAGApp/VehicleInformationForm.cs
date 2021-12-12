@@ -6,6 +6,8 @@
  * Updated: 
  */
 using System.Windows.Forms;
+using System.Data;
+using System;
 
 namespace Franceschetti.Craig.RRCAGApp
 {
@@ -22,15 +24,15 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             InitializeComponent();
 
-            this.lblStockIdOutput.DataBindings.Add("Text", vehicleSource, "StockID");
-
+            this.lblStockIdOutput.DataBindings.Add("Text", vehicleSource, "StockNumber");
+            
             this.lblYearOutput.DataBindings.Add("Text", vehicleSource, "ManufacturedYear");
 
-            this.lblManufacturerOutput.DataBindings.Add("Text", vehicleSource, "Manufacturer");
+            this.lblManufacturerOutput.DataBindings.Add("Text", vehicleSource, "Make");
 
             this.lblModelOutput.DataBindings.Add("Text", vehicleSource, "Model");
 
-            Binding transmission = new Binding("Text", vehicleSource, "IsAutomatic");
+            Binding transmission = new Binding("Text", vehicleSource, "Automatic");
             transmission.Format += Transmission_Format;
             this.lblTransmissionOutput.DataBindings.Add(transmission);
 
@@ -46,7 +48,10 @@ namespace Franceschetti.Craig.RRCAGApp
             basePrice.FormatString = "C";
             this.lblBasePriceOutput.DataBindings.Add(basePrice);
 
-            this.Text = vehicleSource.Current.ToString();
+            this.Text = $"{((DataRowView)vehicleSource.Current).Row.Field<string>("StockNumber")} - " +
+                $"{((DataRowView)vehicleSource.Current).Row.Field<Int16>("ManufacturedYear")} " +
+                $"{((DataRowView)vehicleSource.Current).Row.Field<string>("Make")} " +
+                $"{((DataRowView)vehicleSource.Current).Row.Field<string>("Model")}";
 
             btnClose.Click += BtnClose_Click;
         }

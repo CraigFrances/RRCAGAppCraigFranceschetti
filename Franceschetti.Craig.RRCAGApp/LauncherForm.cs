@@ -3,12 +3,12 @@
  * Program: Business Information Technology
  * Course: ADEV-2008 Programming 2
  * Created: 2021-11-8
- * Updated: 2021-11-28
+ * Updated: 2021-12-12
  */
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -33,6 +33,27 @@ namespace Franceschetti.Craig.RRCAGApp
             this.mnuHelpAbout.Click += MnuHelpAbout_Click;
             this.mnuFileExit.Click += MnuFileExit_Click;
             this.mnuFileOpenCarWash.Click += MnuFileOpenCarWash_Click;
+            this.mnuDataVehicle.Click += MnuDataVehicle_Click;
+        }
+
+        /// <summary>
+        /// Handles the Click even of the data vehicle menu selection.
+        /// </summary>
+        private void MnuDataVehicle_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OleDbConnection connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source = AMDatabase.mdb");
+                connection.Open();
+                connection.Close();
+                connection.Dispose();
+                VehicleDataForm vehicleData = new VehicleDataForm();
+                vehicleData.ShowDialog();
+            }
+            catch (OleDbException)
+            {
+                MessageBox.Show("Unable to load vehicle data.", "Data Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
         }
 
         /// <summary>
@@ -42,7 +63,6 @@ namespace Franceschetti.Craig.RRCAGApp
         {
             try
             {
-                FileStream fragranceStream = new FileStream("fragrances.txt", FileMode.Open, FileAccess.Read);
                 CarWashEntryForm carWashEntryForm = new CarWashEntryForm();
                 carWashEntryForm.ShowDialog();
             }
@@ -78,8 +98,22 @@ namespace Franceschetti.Craig.RRCAGApp
         /// </summary>
         private void MnuFileOpenSalesQuote_Click(object sender, EventArgs e)
         {
-            SalesQuoteForm salesQuoteForm = new SalesQuoteForm();
-            salesQuoteForm.ShowDialog();
+            try
+            {
+                SalesQuoteForm salesQuoteForm = new SalesQuoteForm();
+                salesQuoteForm.ShowDialog();
+            }
+            catch (OleDbException)
+            {
+                MessageBox.Show("Unable to load vehicle data.", "Data Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+            }
+            catch (NoRowsException)
+            {
+                MessageBox.Show("There are no vehicles in stock.", "Sales Quote Data", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            
         }
+
+       
     }
 }
